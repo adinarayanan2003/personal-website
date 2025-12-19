@@ -14,7 +14,7 @@ export function HeroSection() {
         <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
 
             {/* 3D Scene */}
-            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0">
                 <Canvas gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }} dpr={[1, 2]}>
                     <Environment preset="studio" />
                     {/* Infinite Grid & Fog for "Deep UI" feel */}
@@ -33,7 +33,7 @@ export function HeroSection() {
                             transform
                             position={[0, 0, 0]}
                             distanceFactor={5}
-                            zIndexRange={[100, 0]}
+                            style={{ zIndex: 10 }}
                         >
                             <div className="w-[520px] translate-y-[30px] pointer-events-auto">
                                 <NeuralTerminal onProcessingChange={setIsAIProcessing} />
