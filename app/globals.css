@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-jetbrains: "JetBrains Mono", monospace;
+  --font-space: "Space Grotesk", sans-serif;
+}
+
+body {
+  font-family: var(--font-space);
+  background-color: #000000;
+  /* Deepest Black */
+  color: #e2e8f0;
+  /* Silver/White */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-jetbrains);
+  letter-spacing: -0.03em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Utilities */
+.glass-card {
+  background: rgba(0, 0, 0, 0.9);
+  /* Zinc-900 with opacity */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-glow {
+  /* Subtle glow, not neon */
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+/* Animations */
+@keyframes scroll-y {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-y {
+  animation: scroll-y 20s linear infinite;
+}
+
+/* Masks */
+.mask-fade-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.mask-fade-right {
+  -webkit-mask-image: linear-gradient(to right, black 80%, transparent);
+  mask-image: linear-gradient(to right, black 80%, transparent);
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.animate-shine {
+  animation: shine 8s linear infinite;
+}
