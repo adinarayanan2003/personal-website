@@ -8,7 +8,7 @@ export default function Home() {
 
             <HeroSection />
 
-            <div className="relative z-10 -mt-[10vh]">
+            <div className="relative z-10">
                 <BentoGrid />
             </div>
 

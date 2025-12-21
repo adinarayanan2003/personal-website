@@ -43,7 +43,7 @@ export function AgenticVideoCard() {
                     </h3>
                 </div>
 
-                <p className="text-neutral-300 text-sm max-w-[400px] leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                <p className="text-neutral-300 text-sm max-w-[400px] leading-relaxed line-clamp-3">
                     {project.description}
                 </p>
 

@@ -143,12 +143,12 @@ Available Commands:
             {/* Subtle Glow effect behind - Reduced intensity */}
             <div className="absolute -inset-px bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-700" />
 
-            <div className="w-full h-[400px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10">
+            <div className="w-full h-[240px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10" style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-white/5 select-none bg-white/5 rounded-t-xl">
                     <div className="flex items-center gap-2">
-                        <Terminal className="w-4 h-4 text-emerald-500" />
-                        <span className="text-emerald-500/80 font-bold tracking-wider text-xs">ADI_TERMINAL</span>
+                        <Terminal className="w-2 h-2 text-emerald-500" />
+                        <span className="text-emerald-500/80 font-bold tracking-wider text-[8px]">ADI_TERMINAL</span>
                     </div>
                     <div className="flex gap-1.5">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
@@ -165,7 +165,7 @@ Available Commands:
                                 <span className={`mt-1 shrink-0 ${m.role === 'user' ? 'text-neutral-500' : 'text-emerald-500'}`}>
                                     {m.role === 'user' ? '$' : '>'}
                                 </span>
-                                <div className={`prose prose-invert prose-p:leading-relaxed prose-sm max-w-none ${m.role === 'user' ? 'text-white' : 'text-neutral-300'}`}>
+                                <div className={`prose prose-invert prose-p:leading-relaxed prose-xs max-w-none text-[10px] ${m.role === 'user' ? 'text-white' : 'text-neutral-300'}`}>
                                     <ReactMarkdown>{m.content}</ReactMarkdown>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@ Available Commands:
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
-                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-neutral-600 font-medium disabled:opacity-50"
+                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-neutral-600 font-medium disabled:opacity-50 text-[10px]"
                         placeholder={isLoading ? "Systems processing..." : "Initialize command..."}
                         autoComplete="off"
                         autoFocus

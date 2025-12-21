@@ -1,7 +1,7 @@
 "use client";
 
-import OrbitalSystem from "./OrbitalSystem";
 import NeuralTerminal from "./NeuralTerminal";
+import GridTunnel from "./GridTunnel";
 import { Canvas } from "@react-three/fiber";
 import { Environment, PerspectiveCamera, PresentationControls, Float as FloatDrei, Html } from "@react-three/drei";
 import * as THREE from "three";
@@ -17,39 +17,31 @@ export function HeroSection() {
             <div className="absolute inset-0">
                 <Canvas gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }} dpr={[1, 2]}>
                     <Environment preset="studio" />
-                    {/* Infinite Grid & Fog for "Deep UI" feel */}
-                    <color attach="background" args={["#000000"]} />
-                    <fog attach="fog" args={["#000000", 20, 100]} />
 
-                    {/* Moved Camera back to fit the orbit */}
+                    {/* Fog for infinite depth illusion */}
+                    <fog attach="fog" args={["#000000", 50, 200]} />
+
                     <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={45} />
 
-                    {/* Central Group - Reset to Zero for Absolute Alignment */}
+                    {/* Central Group */}
                     <group position={[0, 0, 0]}>
 
-                        {/* The Terminal - Now inside 3D Space */}
+                        {/* The Terminal */}
                         <Html
                             center
                             transform
-                            position={[0, 0, 0]}
+                            position={[0, 0, 5]}
                             distanceFactor={5}
-                            style={{ zIndex: 10 }}
+                            style={{ zIndex: 100 }}
                         >
-                            <div className="w-[520px] translate-y-[30px] pointer-events-auto">
+                            <div className="w-[320px] translate-y-[30px] pointer-events-auto">
                                 <NeuralTerminal onProcessingChange={setIsAIProcessing} />
                             </div>
                         </Html>
 
-                        {/* The Orbiting System */}
-                        <FloatDrei floatIntensity={1} rotationIntensity={0.5} speed={1}>
-                            <OrbitalSystem isProcessing={isAIProcessing} />
-                        </FloatDrei>
+                        {/* The Infinite Grid Tunnel (Simplified) */}
+                        <GridTunnel />
 
-                        {/* Subtle Floor */}
-                        <gridHelper
-                            args={[50, 50, 0x202020, 0x101010]}
-                            position={[0, -4, 0]}
-                        />
                     </group>
                 </Canvas>
             </div>
