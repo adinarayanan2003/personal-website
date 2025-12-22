@@ -1,12 +1,12 @@
 "use client";
 
 import { AgenticVideoCard } from "./Cards/AgenticVideoCard";
-import { VisionCard } from "./Cards/VisionCard";
 import { StackCard } from "./Cards/StackCard";
 import { StatCard } from "./Cards/StatCard";
 import { LocationCard } from "./Cards/LocationCard";
 import { GithubCard } from "./Cards/GithubCard";
 import { OwlyCard } from "./Cards/OwlyCard";
+import ExperienceCard from "./Cards/ExperienceCard";
 
 export function BentoGrid() {
     return (
@@ -14,8 +14,8 @@ export function BentoGrid() {
             <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[160px] gap-4 max-w-5xl w-full">
 
                 {/* -- ROW 1 & 2 -- */}
-                {/* Vision (Left Large) */}
-                <VisionCard />
+                {/* Experience (Left Large) */}
+                <ExperienceCard />
 
                 {/* Owly (Right Large) */}
                 <OwlyCard />

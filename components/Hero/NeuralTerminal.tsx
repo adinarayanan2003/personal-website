@@ -141,31 +141,31 @@ Available Commands:
     return (
         <div className="w-full max-w-lg relative group">
             {/* Subtle Glow effect behind - Reduced intensity */}
-            <div className="absolute -inset-px bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-700" />
+            <div className="absolute inset-1 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-700" />
 
             <div className="w-full h-[180px] sm:h-[240px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10" style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-white/5 select-none bg-white/5 rounded-t-xl">
-                    <div className="flex items-center gap-2">
-                        <Terminal className="w-2 h-2 text-emerald-500" />
-                        <span className="text-emerald-500/80 font-bold tracking-wider text-[8px]">ADI_TERMINAL</span>
+                <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/5 select-none bg-white/5 rounded-t-xl">
+                    <div className="flex items-center gap-1.5">
+                        <Terminal className="w-1.5 h-1.5 text-emerald-500" />
+                        <span className="text-emerald-500/80 font-bold tracking-wider text-[7px]">ADI_TERMINAL</span>
                     </div>
-                    <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
+                    <div className="flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-red-500/20 border border-red-500/50" />
+                        <div className="w-2 h-2 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                        <div className="w-2 h-2 rounded-full bg-green-500/20 border border-green-500/50" />
                     </div>
                 </div>
 
                 {/* Output Area */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
                     {messages.map((m) => (
                         <div key={m.id} className="group animate-fade-in">
-                            <div className="flex items-start gap-3">
-                                <span className={`mt-1 shrink-0 ${m.role === 'user' ? 'text-neutral-500' : 'text-emerald-500'}`}>
+                            <div className="flex items-start gap-2">
+                                <span className={`mt-0.5 shrink-0 text-[9px] ${m.role === 'user' ? 'text-neutral-500' : 'text-emerald-500'}`}>
                                     {m.role === 'user' ? '$' : '>'}
                                 </span>
-                                <div className={`prose prose-invert prose-p:leading-relaxed prose-xs max-w-none text-[10px] ${m.role === 'user' ? 'text-white' : 'text-neutral-300'}`}>
+                                <div className={`prose prose-invert prose-p:leading-relaxed prose-xs max-w-none text-[9px] ${m.role === 'user' ? 'text-white' : 'text-neutral-300'}`}>
                                     <ReactMarkdown>{m.content}</ReactMarkdown>
                                 </div>
                             </div>
@@ -173,9 +173,9 @@ Available Commands:
                     ))}
 
                     {isLoading && (
-                        <div className="flex items-center gap-2 text-emerald-500/50 pl-6 animate-pulse">
-                            <Loader2 className="w-3 h-3 animate-spin" />
-                            <span className="text-xs">Processing...</span>
+                        <div className="flex items-center gap-1.5 text-emerald-500/50 pl-3 animate-pulse">
+                            <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                            <span className="text-[9px]">Processing...</span>
                         </div>
                     )}
                 </div>
@@ -183,17 +183,17 @@ Available Commands:
                 {/* Input Area */}
                 <form
                     onSubmit={handleSubmit}
-                    className="p-4 bg-white/5 border-t border-white/5 flex items-center gap-2 rounded-b-xl"
+                    className="px-3 py-2 bg-white/5 border-t border-white/5 flex items-center gap-2 rounded-b-xl"
                     onClick={() => inputRef.current?.focus()}
                 >
-                    <span className="text-emerald-500 font-bold">$</span>
+                    <span className="text-emerald-500 font-bold text-xs">$</span>
                     <input
                         ref={inputRef}
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
-                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-neutral-600 font-medium disabled:opacity-50 text-[10px]"
+                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-neutral-600 font-medium disabled:opacity-50 text-[9px]"
                         placeholder={isLoading ? "Systems processing..." : "Initialize command..."}
                         autoComplete="off"
                         autoFocus
