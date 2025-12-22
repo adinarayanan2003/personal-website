@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import * as THREE from "three";
 
 export default function GridTunnel() {
@@ -18,14 +18,35 @@ export default function GridTunnel() {
 
     const gridColor = "#ffffff";
 
-    // Box dimensions
-    const boxWidth = 40;
-    const boxHeight = 30;
-    const boxDepth = 100;
+    // Responsive box dimensions
+    const [dimensions, setDimensions] = useState({
+        boxWidth: 40,
+        boxHeight: 30,
+        boxDepth: 100,
+        gridDivisionsX: 20,
+        gridDivisionsY: 15,
+        gridDivisionsZ: 50,
+    });
 
-    const gridDivisionsX = 20;
-    const gridDivisionsY = 15;
-    const gridDivisionsZ = 50;
+    useEffect(() => {
+        const updateDimensions = () => {
+            const isMobile = window.innerWidth < 640;
+            setDimensions({
+                boxWidth: isMobile ? 25 : 40,
+                boxHeight: isMobile ? 20 : 30,
+                boxDepth: isMobile ? 60 : 100,
+                gridDivisionsX: isMobile ? 12 : 20,
+                gridDivisionsY: isMobile ? 10 : 15,
+                gridDivisionsZ: isMobile ? 30 : 50,
+            });
+        };
+
+        updateDimensions();
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
+
+    const { boxWidth, boxHeight, boxDepth, gridDivisionsX, gridDivisionsY, gridDivisionsZ } = dimensions;
 
     // Create grid lines without diagonals
     const createGridLines = (width: number, height: number, divsW: number, divsH: number) => {

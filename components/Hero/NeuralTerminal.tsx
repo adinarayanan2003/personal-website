@@ -143,7 +143,7 @@ Available Commands:
             {/* Subtle Glow effect behind - Reduced intensity */}
             <div className="absolute -inset-px bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-700" />
 
-            <div className="w-full h-[240px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10" style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
+            <div className="w-full h-[180px] sm:h-[240px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10" style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-white/5 select-none bg-white/5 rounded-t-xl">
                     <div className="flex items-center gap-2">

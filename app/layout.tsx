@@ -18,9 +18,24 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-    title: "Adinarayanan | The Tech Nexus",
-    description: "Building the future, one commit at a time. Cyberpunk developer portfolio.",
-    keywords: ["software engineer", "full stack", "cyberpunk", "3d portfolio"],
+    title: "Adi Narayanan | Database Engineer & AI Systems",
+    description: "Building the future, one commit at a time. Specializing in database engineering and AI systems.",
+    keywords: ["database engineer", "AI systems", "software engineer", "full stack", "tech portfolio"],
+    icons: {
+        icon: "/favicon.png",
+    },
+    openGraph: {
+        title: "Adi Narayanan | Database Engineer & AI Systems",
+        description: "Building the future, one commit at a time. Specializing in database engineering and AI systems.",
+        images: ["/og-image.png"],
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Adi Narayanan | Database Engineer & AI Systems",
+        description: "Building the future, one commit at a time. Specializing in database engineering and AI systems.",
+        images: ["/og-image.png"],
+    },
 };
 
 export default function RootLayout({
