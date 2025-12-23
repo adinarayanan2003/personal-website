@@ -5,7 +5,7 @@ import { MapPin } from "lucide-react";
 
 export function LocationCard() {
     return (
-        <BentoCard className="col-span-1 row-span-1 flex flex-col justify-between p-6 bg-black">
+        <BentoCard className="h-full flex flex-col justify-between p-6 bg-black">
             <div className="flex justify-end">
                 <div className="relative flex items-center justify-center h-4 w-4">
                     {/* Subtle pulsing dot */}

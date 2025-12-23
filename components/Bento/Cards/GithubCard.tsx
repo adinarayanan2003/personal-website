@@ -8,7 +8,7 @@ export function GithubCard() {
     const days = 7;
 
     return (
-        <BentoCard className="col-span-1 row-span-1 md:col-span-2 flex flex-col justify-between p-6 bg-black">
+        <BentoCard className="h-full flex flex-col justify-between p-6 bg-black">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <GitCommit className="h-4 w-4 text-neutral-400" />

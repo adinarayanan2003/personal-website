@@ -11,7 +11,7 @@ export function AgenticVideoCard() {
     if (!project) return null;
 
     return (
-        <BentoCard className="col-span-1 row-span-1 md:col-span-2 md:h-full min-h-[180px] border-0 group overflow-hidden bg-black">
+        <BentoCard className="h-full border-0 group overflow-hidden bg-black">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image

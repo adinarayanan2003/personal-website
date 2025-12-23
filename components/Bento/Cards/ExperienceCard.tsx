@@ -6,7 +6,7 @@ import { siteData } from "@/lib/data";
 
 export default function ExperienceCard() {
     return (
-        <BentoCard className="col-span-2 row-span-2">
+        <BentoCard className="h-full">
             <div className="h-full flex flex-col p-6">
                 {/* Header */}
                 <div className="flex items-center gap-2 mb-4">

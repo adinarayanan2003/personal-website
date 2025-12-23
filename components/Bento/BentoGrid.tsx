@@ -11,30 +11,47 @@ import ExperienceCard from "./Cards/ExperienceCard";
 export function BentoGrid() {
     return (
         <section className="container mx-auto px-4 py-12 flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[160px] gap-4 max-w-5xl w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl w-full">
 
-                {/* -- ROW 1 & 2 -- */}
-                {/* Experience (Left Large) */}
-                <ExperienceCard />
+                {/* -- ROW 1: Large Cards -- */}
+                {/* Experience (Left) */}
+                <div className="h-[400px]">
+                    <ExperienceCard />
+                </div>
 
-                {/* Owly (Right Large) */}
-                <OwlyCard />
+                {/* Owly (Right) */}
+                <div className="h-[400px]">
+                    <OwlyCard />
+                </div>
 
-                {/* -- ROW 3 & 4 -- */}
-                {/* Stack (Left Tall) */}
-                <StackCard />
+                {/* -- ROW 2: Large Cards -- */}
+                {/* Stack (Left) */}
+                <div className="h-[400px]">
+                    <StackCard />
+                </div>
 
-                {/* Agentic (Center Top) */}
-                <AgenticVideoCard />
+                {/* Agentic (Right) */}
+                <div className="h-[400px]">
+                    <AgenticVideoCard />
+                </div>
 
-                {/* Stat (Right Top) */}
-                <StatCard />
+                {/* -- ROW 3: Small Stat Cards -- */}
+                <div className="col-span-1 md:col-span-2 grid grid-cols-3 gap-4">
+                    {/* Stats */}
+                    <div className="h-[180px]">
+                        <StatCard />
+                    </div>
 
-                {/* Github (Center Bottom) */}
-                <GithubCard />
+                    {/* Github */}
+                    <div className="h-[180px]">
+                        <GithubCard />
+                    </div>
 
-                {/* Location (Right Bottom) */}
-                <LocationCard />
+                    {/* Location */}
+                    <div className="h-[180px]">
+                        <LocationCard />
+                    </div>
+                </div>
 
             </div>
         </section>

@@ -11,7 +11,7 @@ export function OwlyCard() {
     if (!project) return null;
 
     return (
-        <BentoCard className="col-span-1 row-span-2 md:col-span-2 md:h-full min-h-[300px] border-0 group overflow-hidden bg-black">
+        <BentoCard className="h-full border-0 group overflow-hidden bg-black">
             {/* Background Image - The Owl */}
             <div className="absolute inset-0 z-0">
                 <Image
