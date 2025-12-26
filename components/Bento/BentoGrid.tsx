@@ -15,40 +15,40 @@ export function BentoGrid() {
 
                 {/* -- ROW 1: Large Cards -- */}
                 {/* Experience (Left) */}
-                <div className="h-[400px]">
+                <div className="h-[350px] md:h-[400px]">
                     <ExperienceCard />
                 </div>
 
                 {/* Owly (Right) */}
-                <div className="h-[400px]">
+                <div className="h-[350px] md:h-[400px]">
                     <OwlyCard />
                 </div>
 
                 {/* -- ROW 2: Large Cards -- */}
                 {/* Stack (Left) */}
-                <div className="h-[400px]">
+                <div className="h-[300px] md:h-[400px]">
                     <StackCard />
                 </div>
 
                 {/* Agentic (Right) */}
-                <div className="h-[400px]">
+                <div className="h-[350px] md:h-[400px]">
                     <AgenticVideoCard />
                 </div>
 
                 {/* -- ROW 3: Small Stat Cards -- */}
-                <div className="col-span-1 md:col-span-2 grid grid-cols-3 gap-4">
+                <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* Stats */}
-                    <div className="h-[180px]">
+                    <div className="h-[150px] sm:h-[180px]">
                         <StatCard />
                     </div>
 
                     {/* Github */}
-                    <div className="h-[180px]">
+                    <div className="h-[200px] sm:h-[180px]">
                         <GithubCard />
                     </div>
 
                     {/* Location */}
-                    <div className="h-[180px]">
+                    <div className="h-[150px] sm:h-[180px]">
                         <LocationCard />
                     </div>
                 </div>
