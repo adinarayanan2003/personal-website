@@ -6,6 +6,8 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, PerspectiveCamera, PresentationControls, Float as FloatDrei, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useState, useEffect } from "react";
+import { Github, Linkedin, Twitter } from "lucide-react";
+import { siteData } from "@/lib/data";
 
 export function HeroSection() {
     const [isAIProcessing, setIsAIProcessing] = useState(false);
@@ -20,6 +22,12 @@ export function HeroSection() {
         window.addEventListener('resize', updateFov);
         return () => window.removeEventListener('resize', updateFov);
     }, []);
+
+    const socialLinks = [
+        { icon: Github, href: siteData.social.github, label: "GitHub" },
+        { icon: Linkedin, href: siteData.social.linkedin, label: "LinkedIn" },
+        { icon: Twitter, href: siteData.social.twitter, label: "Twitter" },
+    ];
 
     return (
         <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
@@ -67,6 +75,34 @@ export function HeroSection() {
                         Database Engineer & AI Systems
                     </p>
                 </div>
+            </div>
+
+            {/* Social Links - TOP RIGHT */}
+            <div className="absolute top-4 sm:top-10 right-4 sm:right-10 z-20 flex gap-3 pointer-events-auto">
+                {socialLinks.map(({ icon: Icon, href, label }) => (
+                    <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={label}
+                        className="group relative p-2 rounded-full border border-neutral-700/50 bg-black/30 backdrop-blur-sm 
+                                 hover:border-emerald-500/50 hover:bg-emerald-500/10 
+                                 transition-all duration-300 ease-out
+                                 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/20"
+                    >
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400 group-hover:text-emerald-400 transition-colors duration-300" />
+
+                        {/* Glow effect on hover */}
+                        <span className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+
+                        {/* Tooltip */}
+                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 text-[10px] text-emerald-400 bg-black/80 border border-emerald-500/30 rounded 
+                                       opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                            {label}
+                        </span>
+                    </a>
+                ))}
             </div>
         </section>
     );
