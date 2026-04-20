@@ -17,7 +17,10 @@ const spaceGrotesk = Space_Grotesk({
     display: "swap",
 });
 
+const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+
 export const metadata: Metadata = {
+    metadataBase,
     title: "Adi Narayanan | Database Engineer & AI Systems",
     description: "Building the future, one commit at a time. Specializing in database engineering and AI systems.",
     keywords: ["database engineer", "AI systems", "software engineer", "full stack", "tech portfolio"],
@@ -45,7 +48,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${jetbrainsMono.variable} ${spaceGrotesk.variable} font-sans antialiased bg-black text-white selection:bg-cyan-500/30`}>
+            <body className={`${jetbrainsMono.variable} ${spaceGrotesk.variable} font-sans antialiased bg-black text-white selection:bg-cyan-300/20`}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"

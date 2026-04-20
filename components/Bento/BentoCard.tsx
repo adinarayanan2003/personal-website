@@ -1,7 +1,6 @@
 "use client";
 
 import { TiltWrapper } from "./TiltWrapper";
-import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface BentoCardProps {
@@ -14,7 +13,7 @@ export function BentoCard({ children, className, noTilt = false }: BentoCardProp
     const CardContent = (
         <div
             className={twMerge(
-                "glass-card relative h-full w-full overflow-hidden rounded-2xl transition-all duration-500 hover:border-white/20 hover:bg-black/80",
+                "glass-card relative h-full w-full overflow-hidden rounded-3xl transition-all duration-300 hover:border-cyan-200/35",
                 className
             )}
         >
@@ -24,5 +23,5 @@ export function BentoCard({ children, className, noTilt = false }: BentoCardProp
 
     if (noTilt) return CardContent;
 
-    return <TiltWrapper className={className} rotationFactor={10}>{CardContent}</TiltWrapper>;
+    return <TiltWrapper className="h-full" rotationFactor={5}>{CardContent}</TiltWrapper>;
 }

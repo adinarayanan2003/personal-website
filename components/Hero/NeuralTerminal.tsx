@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { Terminal, Loader2 } from "lucide-react";
+import { siteData } from "@/lib/data";
 
 type Message = {
     id: string;
@@ -51,6 +52,7 @@ Available Commands:
 - **help**: Show this menu
 - **clear**: Clear terminal history
 - **stack**: View tech stack details
+- **projects**: List highlighted projects
 - **socials**: List connection endpoints
                 `
             }]);
@@ -58,7 +60,13 @@ Available Commands:
         }
 
         if (lowerCmd === "clear") {
-            setMessages([]);
+            setMessages([
+                {
+                    id: Date.now().toString(),
+                    role: "model",
+                    content: "Session cleared. Ask me about projects, systems, or experience."
+                }
+            ]);
             return true;
         }
 
@@ -67,6 +75,28 @@ Available Commands:
                 id: Date.now().toString(),
                 role: "model",
                 content: "Core Stack: Python, LangChain, Next.js, Oracle DB, Docker, AWS."
+            }]);
+            return true;
+        }
+
+        if (lowerCmd === "projects") {
+            setMessages(prev => [...prev, {
+                id: Date.now().toString(),
+                role: "model",
+                content: siteData.projects.map((project) => `- ${project.title}`).join("\n")
+            }]);
+            return true;
+        }
+
+        if (lowerCmd === "socials") {
+            setMessages(prev => [...prev, {
+                id: Date.now().toString(),
+                role: "model",
+                content: `
+- GitHub: ${siteData.social.github}
+- LinkedIn: ${siteData.social.linkedin}
+- X: ${siteData.social.twitter}
+                `
             }]);
             return true;
         }
@@ -139,33 +169,32 @@ Available Commands:
     };
 
     return (
-        <div className="w-full max-w-lg relative group">
-            {/* Subtle Glow effect behind - Reduced intensity */}
-            <div className="absolute inset-1 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-700" />
+        <div className="w-full max-w-xl relative group">
+            <div className="absolute inset-1 bg-gradient-to-r from-emerald-400/25 to-cyan-300/30 rounded-xl blur-lg opacity-30 group-hover:opacity-60 transition duration-700" />
 
-            <div className="w-full h-[180px] sm:h-[240px] bg-black border border-neutral-800 rounded-lg overflow-hidden font-mono flex flex-col shadow-2xl relative z-10" style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
+            <div className="w-full h-[220px] sm:h-[280px] md:h-[320px] bg-slate-950/96 border border-slate-300/25 rounded-xl overflow-hidden font-mono flex flex-col shadow-2xl relative z-10">
                 {/* Header */}
-                <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/5 select-none bg-white/5 rounded-t-xl">
-                    <div className="flex items-center gap-1.5">
-                        <Terminal className="w-1.5 h-1.5 text-emerald-500" />
-                        <span className="text-emerald-500/80 font-bold tracking-wider text-[7px]">ADI_TERMINAL</span>
+                <div className="flex items-center justify-between px-3 sm:px-4 py-2 border-b border-slate-300/10 select-none bg-slate-800/40 rounded-t-xl">
+                    <div className="flex items-center gap-2">
+                        <Terminal className="w-3 h-3 text-emerald-400" />
+                        <span className="text-emerald-300/90 font-semibold tracking-[0.18em] text-[10px]">ADI_TERMINAL</span>
                     </div>
-                    <div className="flex gap-1">
-                        <div className="w-2 h-2 rounded-full bg-red-500/20 border border-red-500/50" />
-                        <div className="w-2 h-2 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                        <div className="w-2 h-2 rounded-full bg-green-500/20 border border-green-500/50" />
+                    <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
                     </div>
                 </div>
 
                 {/* Output Area */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 sm:px-4 py-3 space-y-2.5 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/15">
                     {messages.map((m) => (
                         <div key={m.id} className="group animate-fade-in">
                             <div className="flex items-start gap-2">
-                                <span className={`mt-0.5 shrink-0 text-[9px] ${m.role === 'user' ? 'text-neutral-500' : 'text-emerald-500'}`}>
+                                <span className={`mt-0.5 shrink-0 text-[10px] sm:text-[11px] ${m.role === 'user' ? 'text-slate-400' : 'text-emerald-400'}`}>
                                     {m.role === 'user' ? '$' : '>'}
                                 </span>
-                                <div className={`prose prose-invert prose-p:leading-relaxed prose-xs max-w-none text-[9px] ${m.role === 'user' ? 'text-white' : 'text-neutral-300'}`}>
+                                <div className={`prose prose-invert prose-p:leading-relaxed prose-xs max-w-none text-[11px] sm:text-xs ${m.role === 'user' ? 'text-slate-100' : 'text-slate-300'}`}>
                                     <ReactMarkdown>{m.content}</ReactMarkdown>
                                 </div>
                             </div>
@@ -173,9 +202,9 @@ Available Commands:
                     ))}
 
                     {isLoading && (
-                        <div className="flex items-center gap-1.5 text-emerald-500/50 pl-3 animate-pulse">
-                            <Loader2 className="w-2.5 h-2.5 animate-spin" />
-                            <span className="text-[9px]">Processing...</span>
+                        <div className="flex items-center gap-2 text-emerald-300/70 pl-3 animate-pulse">
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                            <span className="text-[11px]">Processing...</span>
                         </div>
                     )}
                 </div>
@@ -183,18 +212,18 @@ Available Commands:
                 {/* Input Area */}
                 <form
                     onSubmit={handleSubmit}
-                    className="px-3 py-2 bg-white/5 border-t border-white/5 flex items-center gap-2 rounded-b-xl"
+                    className="px-3 sm:px-4 py-2.5 bg-slate-800/40 border-t border-slate-300/10 flex items-center gap-2 rounded-b-xl"
                     onClick={() => inputRef.current?.focus()}
                 >
-                    <span className="text-emerald-500 font-bold text-xs">$</span>
+                    <span className="text-emerald-400 font-bold text-sm">$</span>
                     <input
                         ref={inputRef}
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
-                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-neutral-600 font-medium disabled:opacity-50 text-[9px]"
-                        placeholder={isLoading ? "Systems processing..." : "Initialize command..."}
+                        className="flex-1 bg-transparent outline-none text-emerald-100 placeholder:text-slate-500 font-medium disabled:opacity-50 text-xs sm:text-sm"
+                        placeholder={isLoading ? "Systems processing..." : "Try: projects, stack, socials"}
                         autoComplete="off"
                         autoFocus
                     />

@@ -5,14 +5,27 @@
 :root {
   --font-jetbrains: "JetBrains Mono", monospace;
   --font-space: "Space Grotesk", sans-serif;
+  --bg-0: #04070d;
+  --bg-1: #090f1a;
+  --surface: rgba(11, 17, 29, 0.78);
+  --surface-strong: rgba(13, 22, 35, 0.9);
+  --border-soft: rgba(148, 163, 184, 0.2);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --accent: #22d3ee;
+  --accent-2: #34d399;
 }
 
 body {
   font-family: var(--font-space);
-  background-color: #000000;
-  /* Deepest Black */
-  color: #e2e8f0;
-  /* Silver/White */
+  background:
+    radial-gradient(1200px 600px at 15% 0%, rgba(34, 211, 238, 0.14), transparent 52%),
+    radial-gradient(900px 500px at 85% 8%, rgba(52, 211, 153, 0.1), transparent 55%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-0) 35%, #030507 100%);
+  color: var(--text-secondary);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -21,39 +34,63 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-jetbrains);
-  letter-spacing: -0.03em;
+  font-family: var(--font-space);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.85);
+  outline-offset: 3px;
+  border-radius: 10px;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: rgba(15, 23, 42, 0.35);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #404040;
+  background: rgba(148, 163, 184, 0.55);
+}
+
+.noise-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 0.7px, transparent 0);
+  background-size: 4px 4px;
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
 /* Utilities */
 .glass-card {
-  background: rgba(0, 0, 0, 0.9);
-  /* Zinc-900 with opacity */
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.72), var(--surface));
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-soft);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 16px 45px rgba(2, 6, 23, 0.45);
 }
 
 .text-glow {
-  /* Subtle glow, not neon */
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  text-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
 }
 
 /* Animations */
@@ -68,7 +105,7 @@ h6 {
 }
 
 .animate-scroll-y {
-  animation: scroll-y 20s linear infinite;
+  animation: scroll-y 32s linear infinite;
 }
 
 /* Masks */
@@ -90,4 +127,15 @@ h6 {
 
 .animate-shine {
   animation: shine 8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

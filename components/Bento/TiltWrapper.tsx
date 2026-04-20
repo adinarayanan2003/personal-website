@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMotionValue, useSpring, useTransform, motion } from "framer-motion";
 
 interface TiltWrapperProps {
@@ -11,6 +11,7 @@ interface TiltWrapperProps {
 
 export function TiltWrapper({ children, className, rotationFactor = 10 }: TiltWrapperProps) {
     const ref = useRef<HTMLDivElement>(null);
+    const [isInteractive, setIsInteractive] = useState(false);
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -20,6 +21,24 @@ export function TiltWrapper({ children, className, rotationFactor = 10 }: TiltWr
 
     const rotateX = useTransform(mouseY, [-0.5, 0.5], [rotationFactor, -rotationFactor]);
     const rotateY = useTransform(mouseX, [-0.5, 0.5], [-rotationFactor, rotationFactor]);
+
+    useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const coarsePointer = window.matchMedia("(pointer: coarse)");
+
+        const updateInteractivity = () => {
+            setIsInteractive(!prefersReducedMotion.matches && !coarsePointer.matches);
+        };
+
+        updateInteractivity();
+        prefersReducedMotion.addEventListener("change", updateInteractivity);
+        coarsePointer.addEventListener("change", updateInteractivity);
+
+        return () => {
+            prefersReducedMotion.removeEventListener("change", updateInteractivity);
+            coarsePointer.removeEventListener("change", updateInteractivity);
+        };
+    }, []);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!ref.current) return;
@@ -43,6 +62,10 @@ export function TiltWrapper({ children, className, rotationFactor = 10 }: TiltWr
         x.set(0);
         y.set(0);
     };
+
+    if (!isInteractive) {
+        return <div className={className}>{children}</div>;
+    }
 
     return (
         <motion.div

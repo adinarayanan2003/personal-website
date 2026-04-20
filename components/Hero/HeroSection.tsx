@@ -3,7 +3,7 @@
 import NeuralTerminal from "./NeuralTerminal";
 import GridTunnel from "./GridTunnel";
 import { Canvas } from "@react-three/fiber";
-import { Environment, PerspectiveCamera, PresentationControls, Float as FloatDrei, Html } from "@react-three/drei";
+import { Environment, PerspectiveCamera, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useState, useEffect } from "react";
 import { Github, Linkedin, Twitter } from "lucide-react";
@@ -12,6 +12,7 @@ import { siteData } from "@/lib/data";
 export function HeroSection() {
     const [isAIProcessing, setIsAIProcessing] = useState(false);
     const [cameraFov, setCameraFov] = useState(45);
+    const [reduceMotion, setReduceMotion] = useState(false);
 
     useEffect(() => {
         const updateFov = () => {
@@ -23,6 +24,14 @@ export function HeroSection() {
         return () => window.removeEventListener('resize', updateFov);
     }, []);
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const updatePreference = () => setReduceMotion(mediaQuery.matches);
+        updatePreference();
+        mediaQuery.addEventListener("change", updatePreference);
+        return () => mediaQuery.removeEventListener("change", updatePreference);
+    }, []);
+
     const socialLinks = [
         { icon: Github, href: siteData.social.github, label: "GitHub" },
         { icon: Linkedin, href: siteData.social.linkedin, label: "LinkedIn" },
@@ -30,22 +39,18 @@ export function HeroSection() {
     ];
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        <section className="relative min-h-screen w-full overflow-hidden">
 
             {/* 3D Scene */}
             <div className="absolute inset-0">
-                <Canvas gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }} dpr={[1, 2]}>
+                <Canvas gl={{ antialias: !reduceMotion, toneMapping: THREE.ACESFilmicToneMapping }} dpr={reduceMotion ? 1 : [1, 2]}>
                     <Environment preset="studio" />
 
-                    {/* Fog for infinite depth illusion */}
-                    <fog attach="fog" args={["#000000", 50, 200]} />
+                    <fog attach="fog" args={["#050912", 42, 180]} />
 
                     <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={cameraFov} />
 
-                    {/* Central Group */}
                     <group position={[0, 0, 0]}>
-
-                        {/* The Terminal */}
                         <Html
                             center
                             transform
@@ -53,56 +58,71 @@ export function HeroSection() {
                             distanceFactor={5}
                             style={{ zIndex: 100 }}
                         >
-                            <div className="w-[280px] sm:w-[320px] translate-y-[10px] sm:translate-y-[30px] pointer-events-auto">
+                            <div className="w-[300px] sm:w-[360px] md:w-[420px] translate-y-[8px] sm:translate-y-[28px] pointer-events-auto">
                                 <NeuralTerminal onProcessingChange={setIsAIProcessing} />
                             </div>
                         </Html>
 
-                        {/* The Infinite Grid Tunnel (Simplified) */}
-                        <GridTunnel />
-
+                        {!reduceMotion && <GridTunnel />}
                     </group>
                 </Canvas>
             </div>
 
-            {/* Brand Header - TOP CENTER */}
-            <div className="absolute top-4 sm:top-10 left-0 w-full z-20 pointer-events-none select-none text-center">
-                <div className="container mx-auto px-4 sm:px-6">
-                    <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold tracking-tighter mix-blend-difference font-['Helvetica'] bg-clip-text text-transparent bg-gradient-to-r from-neutral-100 via-neutral-500 to-neutral-100 bg-[length:200%_auto] animate-shine">
-                        Adi Narayanan
-                    </h1>
-                    <p className="text-[9px] sm:text-xs md:text-sm text-neutral-400 tracking-[0.15em] sm:tracking-[0.2em] mt-1 sm:mt-2 font-mono uppercase">
-                        Database Engineer & AI Systems
-                    </p>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/35 to-slate-950/70 z-10" />
+
+            {/* Hero copy and controls */}
+            <div className="relative z-20">
+                <div className="container mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-8 min-h-screen flex flex-col">
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="max-w-lg pointer-events-none select-none">
+                            <p className="font-mono uppercase tracking-[0.22em] text-[10px] sm:text-xs text-cyan-200/85">
+                                Database Engineer + AI Systems
+                            </p>
+                            <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold leading-[0.95] tracking-tight text-slate-50 text-glow mt-2">
+                                Adi Narayanan
+                            </h1>
+                            <p className="text-sm sm:text-base text-slate-300 mt-3 max-w-xl">
+                                I build resilient data systems and production AI tools that reduce bug-triage latency and ship features faster.
+                            </p>
+                        </div>
+
+                        <div className="z-20 flex gap-2 sm:gap-3 pointer-events-auto">
+                            {socialLinks.map(({ icon: Icon, href, label }) => (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={label}
+                                    className="group relative p-2.5 rounded-xl border border-slate-300/20 bg-slate-950/55 backdrop-blur-md hover:border-cyan-300/45 hover:bg-cyan-400/10 transition-all duration-300"
+                                >
+                                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-200/90 group-hover:text-cyan-100 transition-colors duration-300" />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-auto pt-10 sm:pt-16 pointer-events-auto">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                            <a
+                                href="#work"
+                                className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-slate-900 bg-cyan-300 hover:bg-cyan-200 transition-colors"
+                            >
+                                Explore Selected Work
+                            </a>
+                            <a
+                                href={`mailto:${siteData.email}`}
+                                className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-slate-100 border border-slate-300/35 bg-slate-900/55 hover:bg-slate-800/70 transition-colors"
+                            >
+                                Contact Me
+                            </a>
+                            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300/20 bg-slate-950/60 text-xs font-mono uppercase tracking-[0.12em] text-slate-300">
+                                <span className={`h-2 w-2 rounded-full ${isAIProcessing ? "bg-cyan-300 animate-pulse" : "bg-emerald-400"}`} />
+                                Terminal {isAIProcessing ? "Processing" : "Online"}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            {/* Social Links - TOP RIGHT */}
-            <div className="absolute top-4 sm:top-10 right-4 sm:right-10 z-20 flex gap-3 pointer-events-auto">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                    <a
-                        key={label}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={label}
-                        className="group relative p-2 rounded-full border border-neutral-700/50 bg-black/30 backdrop-blur-sm 
-                                 hover:border-emerald-500/50 hover:bg-emerald-500/10 
-                                 transition-all duration-300 ease-out
-                                 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/20"
-                    >
-                        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400 group-hover:text-emerald-400 transition-colors duration-300" />
-
-                        {/* Glow effect on hover */}
-                        <span className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-
-                        {/* Tooltip */}
-                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 text-[10px] text-emerald-400 bg-black/80 border border-emerald-500/30 rounded 
-                                       opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                            {label}
-                        </span>
-                    </a>
-                ))}
             </div>
         </section>
     );

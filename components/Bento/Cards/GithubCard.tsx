@@ -1,43 +1,33 @@
 "use client";
 
 import { BentoCard } from "../BentoCard";
-import { GitCommit } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
+import { siteData } from "@/lib/data";
 
 export function GithubCard() {
-    const weeks = 20;
-    const days = 7;
-
     return (
-        <BentoCard className="h-full flex flex-col justify-between p-6 bg-black">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                    <GitCommit className="h-4 w-4 text-neutral-400" />
-                    <span className="text-xs font-medium tracking-widest text-neutral-500 uppercase">Contribution Graph</span>
+        <BentoCard className="h-full flex flex-col justify-between p-5 sm:p-6">
+            <div>
+                <div className="flex items-center gap-2 mb-2">
+                    <Github className="h-4 w-4 text-cyan-300" />
+                    <span className="text-xs font-mono tracking-[0.15em] text-cyan-200/85 uppercase">GitHub</span>
                 </div>
-                <span className="text-xs font-medium text-neutral-300">1,240 Commits</span>
+                <h3 className="text-lg font-semibold text-slate-50">Open Source & Build Logs</h3>
+                <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                    Browse repositories, experiments, and system prototypes in my public profile.
+                </p>
             </div>
 
-            <div className="flex gap-1 overflow-hidden opacity-80 mask-fade-right">
-                {Array.from({ length: weeks }).map((_, w) => (
-                    <div key={w} className="flex flex-col gap-1">
-                        {Array.from({ length: days }).map((_, d) => {
-                            const level = Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
-                            const colors = [
-                                'bg-neutral-800',  // 0 - empty
-                                'bg-neutral-700',  // 1
-                                'bg-neutral-500',  // 2
-                                'bg-white'         // 3 - max
-                            ];
-
-                            return (
-                                <div
-                                    key={d}
-                                    className={`h-2 w-2 rounded-sm ${colors[level]} transition-colors duration-500`}
-                                />
-                            );
-                        })}
-                    </div>
-                ))}
+            <div className="pt-4">
+                <a
+                    href={siteData.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200/30 bg-slate-900/55 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-800/70 transition-colors"
+                >
+                    Open GitHub Profile
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
             </div>
         </BentoCard>
     );
