@@ -6,7 +6,7 @@ import { PixelMark } from "@/components/pixel/PixelMark";
 import { nav, site } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-const MOBILE_HIDDEN = new Set(["#journey", "#about"]);
+const MOBILE_HIDDEN = new Set(["#eras", "#about"]);
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +56,7 @@ export function Header() {
           )}
         >
           <PixelMark className="size-[18px] text-accent" />
-          <span className="text-[14.5px] font-medium tracking-[-0.01em] text-ink">{site.name}</span>
+          <span className="whitespace-nowrap text-[14.5px] font-medium tracking-[-0.01em] text-ink">{site.name}</span>
         </a>
 
         <nav
@@ -72,6 +72,7 @@ export function Header() {
                 "relative px-2.5 py-1.5 text-muted transition-colors duration-200 hover:text-ink focus-visible:outline-offset-[-2px] sm:px-3.5",
                 active === item.href && "text-ink",
                 MOBILE_HIDDEN.has(item.href) && "hidden sm:block",
+                item.href === "#owly" && "max-[399px]:hidden",
               )}
             >
               {active === item.href ? (

@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { site } from "@/lib/data";
 import { createValueNoise, renderField, TEAL } from "@/lib/pixel";
 
-export const alt = `${site.name}. Founder of Owly, database engineer.`;
+export const alt = `${site.name}. Founder and engineer, building Owly.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

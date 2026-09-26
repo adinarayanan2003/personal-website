@@ -1,10 +1,9 @@
 import { About } from "@/components/site/About";
 import { Contact } from "@/components/site/Contact";
+import { ErasSection } from "@/components/site/ErasSection";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
-import { JourneySection } from "@/components/site/JourneySection";
-import { Metrics } from "@/components/site/Metrics";
 import { Owly } from "@/components/site/Owly";
 import { Work } from "@/components/site/Work";
 import { owly, site } from "@/lib/data";
@@ -32,10 +31,9 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
-        <Metrics />
         <Owly />
         <Work />
-        <JourneySection />
+        <ErasSection />
         <About />
         <Contact />
       </main>

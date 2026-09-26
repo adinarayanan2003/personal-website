@@ -19,7 +19,7 @@ export function HeroCarousel({ slides }: { slides: Slide[] }) {
 
   return (
     <div
-      className="fade-in w-full max-w-[520px] justify-self-start lg:justify-self-end"
+      className="fade-in w-full"
       style={{ "--d": "380ms" } as CSSProperties}
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}

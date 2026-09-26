@@ -161,7 +161,7 @@ export function AskAI({ email }: { email: string }) {
             <div className="min-w-0 flex-1">
               <p className="max-w-[420px] text-[14.5px] leading-relaxed text-ink-2">
                 Hi, I&apos;m an AI that answers as Adi. I know what&apos;s on this page, so ask me about Owly, my work
-                at Oracle, the projects or the stack.
+                at Oracle, the projects or what I do off the clock.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {SUGGESTIONS.map((s) => (

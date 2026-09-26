@@ -20,36 +20,43 @@ export type Project = {
   href?: string;
 };
 
-export type JourneyEvent = {
-  /** Date as shown. */
-  when: string;
-  /** "YYYY-MM", used to tell past steps from upcoming ones. Leave out for the open-ended last step. */
-  date?: string;
-  kind: "Milestone" | "Education" | "Work" | "Founder";
+export type Era = {
+  id: string;
   title: string;
-  detail?: string;
-  outcomes?: string[];
-  /** 0 is the main line, 1 is the side branch. */
+  /** Label for narrow screens. */
+  short: string;
+  kicker: string;
+  years: string;
+  /** Start and end as decimal years, for the era map. `to: null` means it's still going. */
+  from: number;
+  to: number | null;
+  /** Row on the era map: 0 for places, 1 for things built alongside them. */
   lane: 0 | 1;
-  /** The side branch starts here. */
-  branch?: boolean;
-  /** The side branch ends here and merges back into the main line. */
-  merge?: boolean;
-  /** The main line ends here and hands over to the side branch. */
-  handoff?: boolean;
+  tone: "neutral" | "teal-dim" | "teal" | "warm";
+  body: string;
   href?: string;
+};
+
+export type OffClock = {
+  id: string;
+  title: string;
+  status: string;
+  body: string;
+  scene: SceneName;
+  sceneLabel: string;
+  hint?: string;
 };
 
 export const site = {
   name: "Adi Narayanan",
   fullName: "Adi Narayanan Koroth",
-  headline: ["Founder of Owly.", "Database engineer."],
+  headline: ["Founder and engineer.", "Building Owly."],
   /** The same headline, broken where it reads best on the hero. */
-  headlineLines: ["Founder of Owly.", "Database engineer."],
+  headlineLines: ["Founder and engineer.", "Building Owly."],
   intro:
-    "Two years at Oracle on RDBMS internals and AI agents that triage database bugs. Now I'm building Owly, AI workflows that take an ad campaign from a single brief to a published video.",
+    "Owly takes an ad campaign from a single brief to a published video. I also spent two years at Oracle on database internals and the AI agents that triage its bugs.",
   description:
-    "Founder of Owly and database engineer. Two years at Oracle on RDBMS internals and AI agents that triage database bugs, now building AI workflows for video ads.",
+    "Founder and engineer in Bengaluru, building Owly: AI workflows that take an ad campaign from a single brief to a published video. Two years at Oracle on database internals and AI agents.",
   location: "Bengaluru, India",
   coordinates: "12.97°N 77.59°E",
   timeZone: "Asia/Kolkata",
@@ -90,13 +97,6 @@ export const owly = {
     "Animated diagram: a one-line brief turns into four storyboard frames, which render into a video and get published.",
   hint: "Hover a frame",
 };
-
-export const metrics = [
-  { value: "30%", label: "less time spent triaging bugs, with SubcompIQ at Oracle" },
-  { value: "80%", label: "productivity gain for my team from GenParse AI" },
-  { value: "MTS-2", label: "promoted from MTS-1 for work on RDBMS internals" },
-  { value: "4+", label: "years shipping software, from Ethereum to Oracle DB" },
-];
 
 const SUBCOMPIQ_LABEL =
   "Animated diagram: a new bug enters a graph of past bugs and components, and a query walks the graph to the predicted sub-component.";
@@ -250,79 +250,86 @@ export const moreProjects: Project[] = [
   },
 ];
 
-/** In order. Present tense, so nothing goes stale when a date passes. */
-export const journey: JourneyEvent[] = [
-  { when: "2018", date: "2018-01", kind: "Milestone", title: "Clears NTSE", detail: "Stage II, with State Rank 14.", lane: 0 },
+/** The big chapters, in order. Overlaps are real: the DAO ran through college, Owly started during Oracle. */
+export const eras: Era[] = [
   {
-    when: "2020",
-    date: "2020-01",
-    kind: "Milestone",
-    title: "Clears JEE",
-    detail: "99.26 percentile in JEE Main. All India Rank 8590 in JEE Advanced.",
+    id: "nitc",
+    title: "NIT Calicut",
+    short: "NITC",
+    kicker: "College",
+    years: "2020 – 2024",
+    from: 2020.92,
+    to: 2024.37,
     lane: 0,
+    tone: "neutral",
+    body: "Computer science. Wrote an operating system from scratch for the XSM machine.",
   },
   {
-    when: "Dec 2020",
-    date: "2020-12",
-    kind: "Education",
-    title: "Joins NIT Calicut",
-    detail: "B.Tech in Computer Science and Engineering. Builds Project eXPOS, an operating system for the XSM machine.",
+    id: "dao",
+    title: "Sarcophagus DAO",
+    short: "DAO",
+    kicker: "Web3",
+    years: "2021 – 2023",
+    from: 2021.92,
+    to: 2023.2,
+    lane: 1,
+    tone: "teal-dim",
+    body: "Core developer on a decentralized dead man's switch, on Ethereum and Arweave, while still in college.",
+  },
+  {
+    id: "oracle",
+    title: "Oracle",
+    short: "ORACLE",
+    kicker: "Big tech",
+    years: "2024 – 2026",
+    from: 2024.42,
+    to: 2026.8,
     lane: 0,
+    tone: "teal",
+    body: "Database internals and AI agents that triage database bugs. Promoted from MTS-1 to MTS-2.",
   },
   {
-    when: "Dec 2021",
-    date: "2021-12",
-    kind: "Work",
-    title: "Joins Sarcophagus DAO",
-    detail: "Builder and core developer on a decentralized dead man's switch, on Ethereum and Arweave.",
+    id: "owly",
+    title: "Owly",
+    short: "OWLY",
+    kicker: "Founder",
+    years: "2025 – Now",
+    from: 2025.0,
+    to: null,
     lane: 1,
-    branch: true,
-  },
-  {
-    when: "Mar 2023",
-    date: "2023-03",
-    kind: "Work",
-    title: "Leaves the DAO",
-    detail: "After 15 months as a core developer.",
-    lane: 1,
-    merge: true,
-  },
-  { when: "May 2024", date: "2024-05", kind: "Education", title: "Graduates", detail: "B.Tech from NIT Calicut.", lane: 0 },
-  {
-    when: "Jun 2024",
-    date: "2024-06",
-    kind: "Work",
-    title: "Joins Oracle",
-    detail:
-      "Member of Technical Staff on RDBMS internals and AI diagnostics. Promoted from MTS-1 to MTS-2. Builds SubcompIQ and GenParse AI.",
-    outcomes: ["30% less triage time", "80% productivity gain"],
-    lane: 0,
-  },
-  {
-    when: "2025",
-    date: "2025-01",
-    kind: "Founder",
-    title: "Starts Owly",
-    detail: "AI workflows for ad campaigns, based in Bengaluru.",
-    lane: 1,
-    branch: true,
-  },
-  {
-    when: "Oct 2026",
-    date: "2026-10",
-    kind: "Work",
-    title: "Leaves Oracle",
-    detail: "After more than two years on the database engine.",
-    lane: 0,
-    handoff: true,
-  },
-  {
-    when: "Next",
-    kind: "Founder",
-    title: "Building Owly",
-    detail: "AI workflows that take an ad campaign from a single brief to a published video.",
-    lane: 1,
+    tone: "warm",
+    body: "AI workflows that take an ad campaign from a single brief to a published video.",
     href: owly.href,
+  },
+];
+
+export const offClock: OffClock[] = [
+  {
+    id: "trading",
+    title: "Attention trading",
+    status: "Past",
+    body: "Something I used to do. Ask me about it.",
+    scene: "trading",
+    sceneLabel: "Animated pixel chart: candles scroll across an attention index, with a crosshair on hover.",
+    hint: "Hover the chart",
+  },
+  {
+    id: "fitness",
+    title: "Fitness",
+    status: "Ongoing",
+    body: "Gym and running.",
+    scene: "fitness",
+    sceneLabel: "Animated pixel figure that switches between running on a track and a barbell squat.",
+    hint: "Hover to sprint",
+  },
+  {
+    id: "dj",
+    title: "DJing",
+    status: "Sometimes",
+    body: "Sometimes I get behind the decks.",
+    scene: "dj",
+    sceneLabel: "Animated pixel DJ setup: two spinning records, a mixer with bouncing levels and a scrolling waveform.",
+    hint: "Move to ride the crossfader",
   },
 ];
 
@@ -339,16 +346,10 @@ export const stack: { group: string; items: string[] }[] = [
   { group: "Web", items: ["React", "Next.js", "Node.js"] },
 ];
 
-export const recognition = [
-  { title: "JEE Advanced", detail: "All India Rank 8590, out of 150,000 who qualified", year: "2020" },
-  { title: "JEE Main", detail: "99.26 percentile, out of 900,000 candidates", year: "2020" },
-  { title: "NTSE", detail: "Cleared Stage II with State Rank 14", year: "2018" },
-];
-
 export const nav = [
   { href: "#owly", label: "Owly" },
   { href: "#work", label: "Work" },
-  { href: "#journey", label: "Journey" },
+  { href: "#eras", label: "Eras" },
   { href: "#about", label: "About" },
   { href: "#contact", label: "Contact" },
 ];
@@ -364,12 +365,11 @@ export function aiContext() {
       email: site.email,
       social: Object.values(site.social).map((s) => `${s.label}: ${s.href}`),
       owly: { ...owly, scene: undefined, sceneLabel: undefined, hint: undefined },
-      metrics,
       projects: [...projects, ...moreProjects].map(({ scene: _s, sceneLabel: _l, hint: _h, ...p }) => p),
-      journey,
+      eras: eras.map(({ id: _id, short: _short, from: _from, to: _to, lane: _lane, tone: _tone, ...e }) => e),
+      offClock: offClock.map(({ title, status, body }) => ({ title, status, body })),
       about,
       stack,
-      recognition,
     },
     null,
     2,

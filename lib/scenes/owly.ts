@@ -19,7 +19,9 @@ export function owly(): Scene {
     // the whole composition so it sits well in wide and tall panels alike.
     const count = 4;
     const gap = 3;
-    const chrome = 12 + 2 + 9 + 6 + 8 + 6 + 5; // brief, chips, labels, render bar
+    const compact = H < 90;
+    const chipsH = compact ? 0 : 2 + 9 + 6;
+    const chrome = 12 + chipsH + 3 + 8 + 6 + 5; // brief, chips, labels, render bar
     let fw = Math.floor((W - 8 - gap * (count - 1)) / count);
     let fh = Math.round(fw * 1.6);
     const maxH = H - chrome - 6;
@@ -43,7 +45,7 @@ export function owly(): Scene {
 
     let cx = box.x;
     CHIPS.forEach((chip, i) => {
-      if (lt < 1.7 + i * 0.2) return;
+      if (compact || lt < 1.7 + i * 0.2) return;
       const w = g.textWidth(chip) + 6;
       if (cx + w > box.x + box.w) return;
       g.frame(cx, box.y + box.h + 2, w, 9, C.T2);
@@ -51,7 +53,7 @@ export function owly(): Scene {
       cx += w + 3;
     });
 
-    const top = box.y + box.h + 2 + 9 + 6;
+    const top = box.y + box.h + chipsH + 3;
 
     let hover = -1;
     for (let i = 0; i < count; i++) {
