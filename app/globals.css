@@ -1,93 +1,411 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --font-jetbrains: "JetBrains Mono", monospace;
-  --font-space: "Space Grotesk", sans-serif;
+@theme {
+  --color-bg: #141414;
+  --color-panel: #1b1b1a;
+  --color-raise: #212120;
+  --color-ink: #f4efe7;
+  --color-ink-2: #cdc6ba;
+  --color-muted: #969088;
+  --color-faint: #625e59;
+  --color-line: rgb(244 239 231 / 0.09);
+  --color-line-2: rgb(244 239 231 / 0.16);
+  --color-accent: #2fc9cf;
+  --color-accent-hi: #7ff3f6;
+  --color-accent-dim: #0f6d72;
+  --color-warm: #f2a068;
+  --color-warm-dim: #b8653a;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body {
-  font-family: var(--font-space);
-  background-color: #000000;
-  /* Deepest Black */
-  color: #e2e8f0;
-  /* Silver/White */
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-jetbrains);
-  letter-spacing: -0.03em;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #000000;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #404040;
-}
-
-/* Utilities */
-.glass-card {
-  background: rgba(0, 0, 0, 0.9);
-  /* Zinc-900 with opacity */
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.text-glow {
-  /* Subtle glow, not neon */
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-}
-
-/* Animations */
-@keyframes scroll-y {
-  0% {
-    transform: translateY(0);
+@layer base {
+  html {
+    background: var(--color-bg);
+    color-scheme: dark;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
   }
 
-  100% {
-    transform: translateY(-50%);
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(47 201 207 / 0.32);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a29;
+    border: 3px solid var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a38;
   }
 }
 
-.animate-scroll-y {
-  animation: scroll-y 20s linear infinite;
+@layer components {
+  .page-x {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: clamp(20px, 4vw, 48px);
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .glass {
+    background: rgb(28 28 27 / 0.62);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  /* Pixel-stepped corners, the shape of an 8-bit window. --s is the step size.
+     The element is clipped to the stepped outline and ::after draws a 1px frame
+     along it, so it works on solid and translucent fills alike. */
+  .px-frame {
+    --s: 5px;
+    --bw: 1px;
+    --frame: var(--color-line);
+    --s2: calc(var(--s) * 2);
+    --sb: calc(var(--s) + var(--bw));
+    --s2b: calc(var(--s2) + var(--bw));
+    position: relative;
+    clip-path: polygon(
+      0 var(--s2), var(--s) var(--s2), var(--s) var(--s), var(--s2) var(--s), var(--s2) 0,
+      calc(100% - var(--s2)) 0, calc(100% - var(--s2)) var(--s), calc(100% - var(--s)) var(--s),
+      calc(100% - var(--s)) var(--s2), 100% var(--s2),
+      100% calc(100% - var(--s2)), calc(100% - var(--s)) calc(100% - var(--s2)),
+      calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - var(--s2)) calc(100% - var(--s)),
+      calc(100% - var(--s2)) 100%,
+      var(--s2) 100%, var(--s2) calc(100% - var(--s)), var(--s) calc(100% - var(--s)),
+      var(--s) calc(100% - var(--s2)), 0 calc(100% - var(--s2))
+    );
+  }
+
+  .px-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: var(--frame);
+    transition: background-color 0.25s var(--ease-soft);
+    clip-path: polygon(
+      evenodd,
+      0 var(--s2), var(--s) var(--s2), var(--s) var(--s), var(--s2) var(--s), var(--s2) 0,
+      calc(100% - var(--s2)) 0, calc(100% - var(--s2)) var(--s), calc(100% - var(--s)) var(--s),
+      calc(100% - var(--s)) var(--s2), 100% var(--s2),
+      100% calc(100% - var(--s2)), calc(100% - var(--s)) calc(100% - var(--s2)),
+      calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - var(--s2)) calc(100% - var(--s)),
+      calc(100% - var(--s2)) 100%,
+      var(--s2) 100%, var(--s2) calc(100% - var(--s)), var(--s) calc(100% - var(--s)),
+      var(--s) calc(100% - var(--s2)), 0 calc(100% - var(--s2)),
+      0 var(--s2),
+      var(--bw) var(--s2b), var(--sb) var(--s2b), var(--sb) var(--sb), var(--s2b) var(--sb), var(--s2b) var(--bw),
+      calc(100% - var(--s2b)) var(--bw), calc(100% - var(--s2b)) var(--sb), calc(100% - var(--sb)) var(--sb),
+      calc(100% - var(--sb)) var(--s2b), calc(100% - var(--bw)) var(--s2b),
+      calc(100% - var(--bw)) calc(100% - var(--s2b)), calc(100% - var(--sb)) calc(100% - var(--s2b)),
+      calc(100% - var(--sb)) calc(100% - var(--sb)), calc(100% - var(--s2b)) calc(100% - var(--sb)),
+      calc(100% - var(--s2b)) calc(100% - var(--bw)),
+      var(--s2b) calc(100% - var(--bw)), var(--s2b) calc(100% - var(--sb)), var(--sb) calc(100% - var(--sb)),
+      var(--sb) calc(100% - var(--s2b)), var(--bw) calc(100% - var(--s2b)),
+      var(--bw) var(--s2b),
+      0 var(--s2)
+    );
+  }
+
+  .px-sm {
+    --s: 3px;
+  }
+
+  .px-lg {
+    --s: 6px;
+  }
+
+  /* Focus rings sit inside clipped elements so the stepped outline can't cut them off. */
+  .px-frame:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-line);
+    padding: 3px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--color-ink-2);
+    background: rgb(244 239 231 / 0.02);
+    white-space: nowrap;
+  }
+
+  /* Underlined text link with a nudging arrow, used for primary actions. */
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: rgb(244 239 231 / 0.35);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: text-decoration-color 0.2s var(--ease-soft);
+  }
+
+  .text-link svg {
+    transition: transform 0.25s var(--ease-soft);
+  }
+
+  .text-link:hover {
+    text-decoration-color: var(--color-ink);
+  }
+
+  .text-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  .text-link:hover svg.up-right {
+    transform: translate(2px, -2px);
+  }
+
+  /* A single square "pixel" used as a bullet. */
+  .pixel {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    flex: none;
+  }
+
+  .live-dot {
+    --dot: var(--color-accent);
+    position: relative;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--dot);
+    animation: live 2.4s var(--ease-soft) infinite;
+  }
+
+  /* Scroll reveal. Content stays visible without JS (see layout noscript). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.8s var(--ease-soft) var(--reveal-delay, 0ms),
+      transform 0.8s var(--ease-soft) var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Headline lines rise into place on first load. */
+  .rise-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  .rise-line > span {
+    display: inline-block;
+    text-wrap: balance;
+    animation: rise 1s var(--ease-soft) both;
+    animation-delay: calc(120ms + var(--i, 0) * 90ms);
+  }
+
+  .fade-in {
+    animation: fade-up 0.9s var(--ease-soft) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .slide-progress {
+    animation: progress var(--slide-ms, 6500ms) linear both;
+  }
+
+  .skip-link {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    font-weight: 500;
+    transform: translateY(-200%);
+    clip-path: inset(50%);
+    transition: transform 0.2s var(--ease-soft);
+  }
+
+  .skip-link:focus {
+    transform: none;
+    clip-path: none;
+  }
+
+  .pixelated {
+    image-rendering: pixelated;
+  }
+
+  /* Work deck: a buried card tilts back, shrinks and dims as the next one covers it.
+     --covered (0..1) is set from scroll in WorkStack. */
+  .stack-card {
+    --covered: 0;
+    transform-origin: 50% 0%;
+    transform: translateY(calc(var(--covered) * -16px)) scale(calc(1 - var(--covered) * 0.07))
+      rotateX(calc(var(--covered) * 9deg));
+  }
+
+  .stack-shade {
+    opacity: calc(var(--covered) * 0.62);
+  }
+
+  @media (max-width: 767px) {
+    .stack-card {
+      transform: none;
+    }
+
+    .stack-shade {
+      opacity: 0;
+    }
+  }
+
+  /* Three pixels blinking in turn, the chat's "thinking" state. */
+  .pixel-typing {
+    display: inline-flex;
+    gap: 4px;
+    padding-top: 7px;
+  }
+
+  .pixel-typing i {
+    width: 5px;
+    height: 5px;
+    background: var(--color-accent);
+    animation: blink 0.9s steps(1, end) infinite;
+  }
+
+  .pixel-typing i:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .pixel-typing i:nth-child(3) {
+    animation-delay: 0.3s;
+  }
 }
 
-/* Masks */
-.mask-fade-y {
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-}
-
-.mask-fade-right {
-  -webkit-mask-image: linear-gradient(to right, black 80%, transparent);
-  mask-image: linear-gradient(to right, black 80%, transparent);
-}
-
-@keyframes shine {
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
   to {
-    background-position: 200% center;
+    transform: none;
   }
 }
 
-.animate-shine {
-  animation: shine 8s linear infinite;
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes live {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--dot) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--dot) 0%, transparent);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .rise-line > span,
+  .fade-in {
+    animation: none;
+  }
+
+  .live-dot {
+    animation: none;
+  }
+
+  /* Keep the dimming, drop the tilt. */
+  .stack-card {
+    transform: none;
+  }
 }
