@@ -28,6 +28,15 @@ Other scripts:
 | `lib/pixel.ts` | Noise, dithering and masks shared by the live field and the generated OG image. |
 | `app/opengraph-image.tsx` | Social card, generated at build time. |
 
+## Things to find
+
+- **DJ mode:** type `dj` anywhere, or press play on the DJing card. A short house loop is synthesized
+  in the browser (`lib/dj.ts`, no audio files); the pixel fields pulse, a spectrum runs along the
+  bottom and the section rail becomes a level meter. Escape stops it.
+- **Time travel:** drag along the eras timeline (or focus it and use the arrow keys) to pull the
+  "now" marker back. The chapters you were in at that moment light up.
+- **Redacted:** the stealth chapter stays under marker bars. Hovering decodes about half of it.
+
 ## Editing content
 
 Change text in `lib/data.ts`. To add a project, add an entry to `projects` or `moreProjects`. Then

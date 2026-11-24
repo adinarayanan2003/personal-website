@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { useDjOn } from "@/components/site/DjMode";
+import { bands } from "@/lib/dj";
 import { sections } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
@@ -9,10 +11,12 @@ import { cn } from "@/lib/utils";
  * Wayfinding for a one-page site, in place of a menu bar: a column of pixels on the
  * right edge, one per section. The current section stretches into a lit bar. Hovering
  * or focusing the rail spells out the section names. Hidden on small screens, where
- * scrolling is the navigation.
+ * scrolling is the navigation. In DJ mode the bars turn into a level meter.
  */
 export function SectionRail() {
   const [active, setActive] = useState<string>(sections[0].href);
+  const bars = useRef<(HTMLSpanElement | null)[]>([]);
+  const dj = useDjOn();
 
   useEffect(() => {
     const els = sections
@@ -31,13 +35,39 @@ export function SectionRail() {
     return () => io.disconnect();
   }, []);
 
+  // Level meter: top bar is the highs, bottom bar the bass. Styles are set directly
+  // each frame and cleared afterwards, so the normal classes take over again.
+  useEffect(() => {
+    if (!dj || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = bars.current;
+    let raf = 0;
+    let last = 0;
+    const loop = (now: number) => {
+      raf = requestAnimationFrame(loop);
+      if (now - last < 50) return;
+      last = now;
+      const level = bands(els.length).reverse();
+      els.forEach((el, i) => {
+        if (!el) return;
+        const v = level[i];
+        el.style.width = `${4 + Math.round(v * 7) * 4}px`;
+        el.style.backgroundColor = v > 0.8 ? "var(--color-warm)" : "var(--color-accent)";
+      });
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      els.forEach((el) => el?.removeAttribute("style"));
+    };
+  }, [dj]);
+
   return (
     <nav
       aria-label="Sections"
       className="group/rail fixed right-2 top-1/2 z-40 hidden -translate-y-1/2 md:block lg:right-4"
     >
       <ol className="flex flex-col items-end">
-        {sections.map((s) => {
+        {sections.map((s, i) => {
           const on = active === s.href;
           return (
             <li key={s.href}>
@@ -56,9 +86,13 @@ export function SectionRail() {
                   {s.label}
                 </span>
                 <span
+                  ref={(el) => {
+                    bars.current[i] = el;
+                  }}
                   aria-hidden
                   className={cn(
-                    "block h-[4px] transition-[width,background-color] duration-300 ease-soft",
+                    "block h-[4px]",
+                    dj ? "transition-none" : "transition-[width,background-color] duration-300 ease-soft",
                     on ? "w-[16px] bg-accent" : "w-[4px] bg-faint group-hover/item:bg-ink-2",
                   )}
                 />

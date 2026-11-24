@@ -1,4 +1,5 @@
 import { PixelScene } from "@/components/pixel/PixelScene";
+import { DjPlayButton } from "@/components/site/DjMode";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { about, offClock, stack } from "@/lib/data";
@@ -59,7 +60,9 @@ export function About() {
                   <span className="label text-[10.5px]">{item.status}</span>
                 </div>
                 <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{item.body}</p>
-                {item.hint ? (
+                {item.id === "dj" ? (
+                  <DjPlayButton />
+                ) : item.hint ? (
                   <p className="label mt-auto hidden pt-5 text-[10.5px] text-faint [@media(hover:hover)]:block">
                     {item.hint}
                   </p>

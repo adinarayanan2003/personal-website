@@ -35,6 +35,8 @@ export type Era = {
   tone: "neutral" | "teal-dim" | "teal" | "warm";
   body: string;
   href?: string;
+  /** Show the body (and the band's name on the map) as redacted text. */
+  redacted?: boolean;
 };
 
 export type OffClock = {
@@ -291,6 +293,7 @@ export const eras: Era[] = [
     lane: 0,
     tone: "neutral",
     body: "Something new, still under wraps. More when it's ready.",
+    redacted: true,
   },
 ];
 
