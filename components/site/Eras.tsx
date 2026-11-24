@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
 
 const LUT = new Uint32Array(PALETTE.map((hex, i) => (i === 0 ? 0 : hexToRGBA32(hex))));
 const Y0 = 2020;
-const Y1 = 2027;
+/** The ruler always runs at least a year past today, so a chapter that just started still has room to show. */
+const rulerEnd = (now: number) => Math.ceil(now + 1);
 
 /** [fill, highlight, hot] per tone. */
 const TONES: Record<Era["tone"], readonly [number, number, number]> = {
@@ -43,7 +44,7 @@ export function Eras({ eras }: { eras: Era[] }) {
   return (
     <div className="mt-10 sm:mt-14">
       <EraMap eras={eras} active={active} onActive={setActive} />
-      <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {eras.map((era) => {
           const on = active === era.id;
           return (
@@ -150,6 +151,7 @@ function EraMap({
       const H = g.rows;
       const intro = reduce ? 1 : introStart < 0 ? 0 : Math.min(1, (now - introStart) / 1400);
       const nowYr = nowYear();
+      const Y1 = rulerEnd(nowYr);
       const pad = 2;
       const x = (yr: number) => pad + Math.round(((yr - Y0) / (Y1 - Y0)) * (W - pad * 2 - 1));
       const barH = narrow ? 7 : 9;
@@ -209,7 +211,7 @@ function EraMap({
 
         const name = narrow ? era.short : era.title.toUpperCase();
         const tw = g.textWidth(name);
-        const room = (era.to === null ? Math.min(end, nowX) : Math.min(end, full)) - start;
+        const room = Math.min(end, full) - start;
         if (grow >= 1 && tw + 5 <= room) g.text(start + 3, y0 + ((barH - 5) >> 1), name, on ? C.INK : hot);
         else if (grow >= 1 && g.textWidth(era.short) + 5 <= room) g.text(start + 3, y0 + ((barH - 5) >> 1), era.short, on ? C.INK : hot);
       });

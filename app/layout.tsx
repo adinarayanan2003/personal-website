@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const title = `${site.name} | Founder and engineer, building Owly`;
+const title = `${site.name} | Founder and engineer`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

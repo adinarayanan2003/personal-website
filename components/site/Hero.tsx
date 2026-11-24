@@ -16,13 +16,13 @@ export function Hero() {
       {/* No panel edge: the field thins out behind the copy and dithers away at the bottom. */}
       <PixelField originX={0.8} originY={0.36} radius={0.62} intensity={0.84} mask="hero" className="-z-10" />
 
-      <div className="page-x grid min-h-0 flex-1 items-center gap-12 pb-8 pt-24 sm:pt-28 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] lg:gap-12 lg:pb-6 lg:pt-24">
+      <div className="page-x grid min-h-0 flex-1 items-center gap-12 pb-8 pt-16 sm:pt-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] lg:gap-12 lg:pb-6 lg:pt-12">
         <div className="max-w-[760px]">
           <h1
             id="hero-title"
             className="text-[clamp(30px,8.9vw,42px)] font-semibold leading-[1.02] tracking-[-0.04em] text-ink sm:text-[56px] lg:text-[min(66px,4.6vw,8.4svh)]"
           >
-            {site.headlineLines.map((line, i) => (
+            {site.headline.map((line, i) => (
               <span key={line} className="rise-line" style={{ "--i": i } as CSSProperties}>
                 <span className={i > 0 ? "text-ink-2" : undefined}>{line} </span>
               </span>
@@ -51,7 +51,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* The card only fits beside the copy; on smaller screens the Owly section right below covers it. */}
+        {/* The card only fits beside the copy; on smaller screens the Work section covers the same projects. */}
         <div className="hidden w-full max-w-[440px] justify-self-end lg:block">
           <HeroCarousel slides={featured} />
         </div>
@@ -63,7 +63,6 @@ export function Hero() {
         style={{ "--d": "520ms" } as CSSProperties}
       >
         <p className="flex items-center gap-3">
-          <span className="pixel" aria-hidden />
           <span className="text-ink-2">{site.location}</span>
           <span className="hidden text-faint sm:inline">{site.coordinates}</span>
         </p>

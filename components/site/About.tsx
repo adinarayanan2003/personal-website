@@ -2,13 +2,14 @@ import { PixelScene } from "@/components/pixel/PixelScene";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { about, offClock, stack } from "@/lib/data";
+import { joinWords } from "@/lib/utils";
 
 export function About() {
   const [lead, ...rest] = about;
 
   return (
     <section id="about" aria-labelledby="about-title" className="page-x pt-24 sm:pt-32">
-      <SectionHeading id="about-title" index="04" eyebrow="About" title="The short version" />
+      <SectionHeading id="about-title" title="The short version" />
 
       <div className="mt-10 grid gap-14 sm:mt-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-20">
         <Reveal>
@@ -21,21 +22,15 @@ export function About() {
         </Reveal>
 
         <Reveal delay={80}>
-          <h3 className="label">Stack</h3>
-          <dl className="mt-4 border-t border-line">
+          <h3 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">What I work with</h3>
+          <dl className="mt-5 border-t border-line">
             {stack.map((row) => (
               <div
                 key={row.group}
-                className="grid gap-2 border-b border-line py-4 sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-6"
+                className="grid gap-1 border-b border-line py-4 sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-6"
               >
-                <dt className="pt-1 text-[14px] text-ink-2">{row.group}</dt>
-                <dd className="flex flex-wrap gap-1.5">
-                  {row.items.map((item) => (
-                    <span key={item} className="chip">
-                      {item}
-                    </span>
-                  ))}
-                </dd>
+                <dt className="text-[14px] text-muted">{row.group}</dt>
+                <dd className="text-[15px] leading-relaxed text-ink-2">{joinWords(row.items)}</dd>
               </div>
             ))}
           </dl>
@@ -44,17 +39,11 @@ export function About() {
 
       <Reveal className="mt-16 sm:mt-24">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-10">
-          <div>
-            <p className="label flex items-center gap-2.5">
-              <span className="pixel bg-warm" aria-hidden />
-              Off the clock
-            </p>
-            <h3 className="mt-3 text-[26px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink sm:text-[30px]">
-              Trading, training and tracks.
-            </h3>
-          </div>
+          <h3 className="text-[26px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink sm:text-[30px]">
+            Off the clock
+          </h3>
           <p className="max-w-[340px] text-[15px] leading-relaxed text-muted md:text-right">
-            A few things that aren&apos;t on the résumé.
+            Trading, training and tracks. A few things that aren&apos;t on the résumé.
           </p>
         </div>
 

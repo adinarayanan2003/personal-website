@@ -28,7 +28,7 @@
   html {
     background: var(--color-bg);
     color-scheme: dark;
-    scroll-padding-top: 88px;
+    scroll-padding-top: 24px;
     -webkit-text-size-adjust: 100%;
   }
 
@@ -169,18 +169,6 @@
     outline-offset: -4px;
   }
 
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--color-line);
-    padding: 3px 10px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--color-ink-2);
-    background: rgb(244 239 231 / 0.02);
-    white-space: nowrap;
-  }
 
   /* Underlined text link with a nudging arrow, used for primary actions. */
   .text-link {
@@ -212,24 +200,6 @@
     transform: translate(2px, -2px);
   }
 
-  /* A single square "pixel" used as a bullet. */
-  .pixel {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--color-accent);
-    flex: none;
-  }
-
-  .live-dot {
-    --dot: var(--color-accent);
-    position: relative;
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: var(--dot);
-    animation: live 2.4s var(--ease-soft) infinite;
-  }
 
   /* Scroll reveal. Content stays visible without JS (see layout noscript). */
   .reveal {
@@ -269,25 +239,6 @@
     animation: progress var(--slide-ms, 6500ms) linear both;
   }
 
-  .skip-link {
-    position: fixed;
-    left: 16px;
-    top: 16px;
-    z-index: 100;
-    padding: 10px 14px;
-    background: var(--color-ink);
-    color: var(--color-bg);
-    font-weight: 500;
-    transform: translateY(-200%);
-    clip-path: inset(50%);
-    transition: transform 0.2s var(--ease-soft);
-  }
-
-  .skip-link:focus {
-    transform: none;
-    clip-path: none;
-  }
-
   .pixelated {
     image-rendering: pixelated;
   }
@@ -315,27 +266,6 @@
     }
   }
 
-  /* Three pixels blinking in turn, the chat's "thinking" state. */
-  .pixel-typing {
-    display: inline-flex;
-    gap: 4px;
-    padding-top: 7px;
-  }
-
-  .pixel-typing i {
-    width: 5px;
-    height: 5px;
-    background: var(--color-accent);
-    animation: blink 0.9s steps(1, end) infinite;
-  }
-
-  .pixel-typing i:nth-child(2) {
-    animation-delay: 0.15s;
-  }
-
-  .pixel-typing i:nth-child(3) {
-    animation-delay: 0.3s;
-  }
 }
 
 @keyframes rise {
@@ -367,26 +297,6 @@
   }
 }
 
-@keyframes live {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--dot) 55%, transparent);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 7px color-mix(in srgb, var(--dot) 0%, transparent);
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal[data-shown="true"] {
@@ -397,10 +307,6 @@
 
   .rise-line > span,
   .fade-in {
-    animation: none;
-  }
-
-  .live-dot {
     animation: none;
   }
 

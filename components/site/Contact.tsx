@@ -1,5 +1,4 @@
 import { PixelField } from "@/components/pixel/PixelField";
-import { AskAI } from "@/components/site/AskAI";
 import { CopyEmail } from "@/components/site/CopyEmail";
 import { ArrowUpRight, GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
@@ -16,24 +15,20 @@ export function Contact() {
     <section id="contact" aria-labelledby="contact-title" className="page-x pt-24 sm:pt-32">
       <Reveal>
         <div className="px-frame px-lg isolate overflow-hidden bg-panel">
-          <PixelField originX={0.28} originY={1.02} radius={0.62} intensity={0.78} seed={23} mask="contact" className="-z-10" />
+          {/* The field fills the right half on wide screens and the bottom on narrow ones, so the copy stays clear. */}
+          <PixelField originX={0.86} originY={0.62} radius={0.6} intensity={0.82} seed={23} mask="contact" className="-z-10" />
 
-          <div className="grid gap-10 p-6 sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 lg:p-14">
-            <div className="flex flex-col">
-              <p className="label flex items-center gap-2.5">
-                <span className="pixel" />
-                <span className="text-faint">05</span>
-                <span>Contact</span>
-              </p>
+          <div className="p-6 pb-36 sm:p-10 sm:pb-44 lg:min-h-[460px] lg:p-14">
+            <div className="flex h-full max-w-[520px] flex-col lg:min-h-[352px]">
               <h2
                 id="contact-title"
-                className="mt-4 text-[44px] font-semibold leading-[0.98] tracking-[-0.045em] text-ink sm:text-[64px]"
+                className="text-[44px] font-semibold leading-[0.98] tracking-[-0.045em] text-ink sm:text-[64px]"
               >
                 Get in touch
               </h2>
               <p className="mt-6 max-w-[440px] text-[16.5px] leading-relaxed text-ink-2">
-                Working on AI systems, databases or video? Email is the fastest way to reach me. For Owly, the
-                team is at owly.studio.
+                Working on AI systems, databases or video, or just want to talk running or music? Email is
+                the fastest way to reach me.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -64,8 +59,6 @@ export function Contact() {
                 ))}
               </ul>
             </div>
-
-            <AskAI email={site.email} />
           </div>
         </div>
       </Reveal>

@@ -16,7 +16,7 @@ type PixelFieldProps = Partial<Omit<FieldShape, "levels">> & {
   /** Light up pixels under the pointer (skipped on touch devices). */
   interactive?: boolean;
   seed?: number;
-  /** Where the field thins out: "hero" (behind the copy and at the bottom), "contact" (toward the top). */
+  /** Where the field thins out: "hero" (behind the copy and at the bottom), "contact" (behind the copy on the left, or toward the top on narrow screens). */
   mask?: FieldMask;
 };
 

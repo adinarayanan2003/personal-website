@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { PixelScene } from "@/components/pixel/PixelScene";
+import { ArrowUpRight } from "@/components/ui/icons";
 import type { Project } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { joinWords } from "@/lib/utils";
 
 /**
  * Main projects as a deck. Each card pins under the header and the next one slides
@@ -64,14 +65,14 @@ export function WorkStack({ projects }: { projects: Project[] }) {
         <li
           key={project.slug}
           className="md:sticky md:mb-[10vh] md:last:mb-0 md:[perspective:1600px]"
-          style={{ top: `${88 + i * 16}px` } as CSSProperties}
+          style={{ top: `${28 + i * 12}px` } as CSSProperties}
         >
           <article
             data-card
             aria-labelledby={`${project.slug}-title`}
             className="stack-card px-frame px-lg overflow-hidden bg-panel"
           >
-            <div className="grid md:h-[min(580px,calc(100svh-150px))] md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+            <div className="grid md:h-[min(600px,calc(100svh-110px))] md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div className="relative aspect-[16/10] border-b border-line md:aspect-auto md:border-b-0 md:border-r">
                 <PixelScene
                   name={project.scene}
@@ -82,12 +83,7 @@ export function WorkStack({ projects }: { projects: Project[] }) {
               </div>
 
               <div className="flex flex-col p-6 sm:p-8 lg:p-10">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="label">{project.label}</p>
-                  <p className="font-mono text-[12px] text-faint">
-                    {String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-                  </p>
-                </div>
+                <p className="label">{project.label}</p>
 
                 <h3
                   id={`${project.slug}-title`}
@@ -95,51 +91,39 @@ export function WorkStack({ projects }: { projects: Project[] }) {
                 >
                   {project.title}
                 </h3>
-                <p className="mt-3 max-w-[440px] text-[15.5px] leading-relaxed text-ink-2">{project.summary}</p>
+                <p className="mt-3 max-w-[440px] text-[15.5px] leading-relaxed text-ink-2">
+                  {project.summary}
+                  {project.outcome ? <span className="text-accent-hi"> {project.outcome}.</span> : null}
+                </p>
 
-                {project.steps ? (
-                  <ol className="mt-6 space-y-3 border-t border-line pt-6 lg:mt-8">
-                    {project.steps.map((step, s) => (
-                      <li key={step} className="flex gap-4 text-[14.5px] leading-relaxed text-muted">
-                        <span className="font-mono text-[12px] leading-[1.9] text-faint">{String(s + 1).padStart(2, "0")}</span>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                ) : null}
-
-                {project.hint ? (
-                  <p className="label mt-auto hidden items-center gap-2 pt-7 text-[10.5px] text-faint [@media(hover:hover)]:flex">
-                    <PointerIcon />
-                    {project.hint}
+                {project.how ? (
+                  <p className="mt-6 max-w-[440px] border-t border-line pt-6 text-[14.5px] leading-[1.7] text-muted lg:mt-8">
+                    {project.how}
                   </p>
                 ) : null}
 
-                <div
-                  className={cn(
-                    "flex flex-wrap items-center gap-2",
-                    project.hint ? "mt-auto pt-7 [@media(hover:hover)]:mt-3 [@media(hover:hover)]:pt-0" : "mt-auto pt-7",
-                  )}
-                >
-                  {project.outcome ? (
-                    <span className="chip gap-2 border-[rgb(47_201_207/0.35)] text-accent-hi">
-                      <span className="pixel size-[5px]" aria-hidden />
-                      {project.outcome}
-                    </span>
+                {project.href ? (
+                  <a href={project.href} target="_blank" rel="noreferrer" className="text-link mt-6 self-start text-[14.5px]">
+                    Visit {new URL(project.href).hostname.replace(/^www\./, "")}
+                    <ArrowUpRight className="up-right size-3.5" />
+                  </a>
+                ) : null}
+
+                <div className="mt-auto flex flex-wrap items-end justify-between gap-x-6 gap-y-2 pt-7 text-[13.5px] leading-relaxed">
+                  <p className="text-faint">
+                    Built with <span className="text-ink-2">{joinWords(project.tech)}</span>.
+                  </p>
+                  {project.hint ? (
+                    <p className="label hidden items-center gap-2 text-[10.5px] text-faint [@media(hover:hover)]:flex">
+                      <PointerIcon />
+                      {project.hint}
+                    </p>
                   ) : null}
-                  {project.tech.map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
-                  ))}
                 </div>
               </div>
             </div>
 
-            <div
-              aria-hidden
-              className={cn("stack-shade pointer-events-none absolute inset-0 bg-bg")}
-            />
+            <div aria-hidden className="stack-shade pointer-events-none absolute inset-0 bg-bg" />
           </article>
         </li>
       ))}
