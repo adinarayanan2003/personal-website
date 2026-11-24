@@ -15,8 +15,8 @@ export type Project = {
   sceneLabel: string;
   /** What the pointer does in the diagram. */
   hint?: string;
-  /** How it works, in two or three short steps. */
-  steps?: string[];
+  /** How it works, in two or three plain sentences. */
+  how?: string;
   href?: string;
 };
 
@@ -35,6 +35,8 @@ export type Era = {
   tone: "neutral" | "teal-dim" | "teal" | "warm";
   body: string;
   href?: string;
+  /** Show the body (and the band's name on the map) as redacted text. */
+  redacted?: boolean;
 };
 
 export type OffClock = {
@@ -50,13 +52,12 @@ export type OffClock = {
 export const site = {
   name: "Adi Narayanan",
   fullName: "Adi Narayanan Koroth",
-  headline: ["Founder and engineer.", "Building Owly."],
-  /** The same headline, broken where it reads best on the hero. */
-  headlineLines: ["Founder and engineer.", "Building Owly."],
+  /** One entry per line on the hero and the OG image. */
+  headline: ["Adi Narayanan.", "Founder and engineer."],
   intro:
-    "Owly takes an ad campaign from a single brief to a published video. I also spent two years at Oracle on database internals and the AI agents that triage its bugs.",
+    "I'm working on a new startup, still in stealth. Before this I founded Owly, which turns a single brief into a finished video ad, and spent two years at Oracle on database internals and AI agents. Away from the keyboard I'm at the gym, out on a run, or now and then behind the decks.",
   description:
-    "Founder and engineer in Bengaluru, building Owly: AI workflows that take an ad campaign from a single brief to a published video. Two years at Oracle on database internals and AI agents.",
+    "Founder and engineer in Bengaluru, now building a startup in stealth. Previously founded Owly (AI video for ad campaigns) and spent two years at Oracle on database internals and AI agents.",
   location: "Bengaluru, India",
   coordinates: "12.97°N 77.59°E",
   timeZone: "Asia/Kolkata",
@@ -77,27 +78,10 @@ export const site = {
   },
 } as const;
 
-export const owly = {
-  name: "Owly",
-  role: "Founder",
-  since: "2025",
-  href: "https://www.owly.studio/",
-  hrefLabel: "owly.studio",
-  pitch:
-    "AI workflows for ad campaigns. One brief turns into storyboards, moodboards, video ads and social posts, then an AI editor finishes the cut.",
-  steps: [
-    { title: "Ideation", body: "Research the audience and reverse engineer ads that already work." },
-    { title: "Creation", body: "Storyboards, moodboards, videos and static posts from one brief." },
-    { title: "AI editor", body: "Ask for motion graphics, trims, color grading or B-roll in plain words." },
-    { title: "Publish and learn", body: "Ship the ads, see what worked, feed it into the next campaign." },
-  ],
-  tech: ["LangGraph", "ComfyUI", "LoRA", "React", "FFmpeg"],
-  scene: "owly" as SceneName,
-  sceneLabel:
-    "Animated diagram: a one-line brief turns into four storyboard frames, which render into a video and get published.",
-  hint: "Hover a frame",
-};
-
+const OWLY_HREF = "https://www.owly.studio/";
+const OWLY_TECH = ["LangGraph", "ComfyUI", "LoRA", "React", "FFmpeg"];
+const OWLY_LABEL =
+  "Animated diagram: a one-line brief turns into four storyboard frames, which render into a video and get published.";
 const SUBCOMPIQ_LABEL =
   "Animated diagram: a new bug enters a graph of past bugs and components, and a query walks the graph to the predicted sub-component.";
 const DIAG_LABEL =
@@ -108,17 +92,6 @@ const EXPOS_LABEL =
   "Animated diagram: a page table maps virtual pages to physical memory frames, with page faults filling free frames.";
 
 export const featured: (Project & { cta: string; target: string })[] = [
-  {
-    slug: "owly",
-    title: "Owly",
-    label: "Founder",
-    summary: "AI workflows for ad campaigns, from a single brief to a published video.",
-    tech: owly.tech,
-    scene: "owly",
-    sceneLabel: owly.sceneLabel,
-    cta: "About Owly",
-    target: "#owly",
-  },
   {
     slug: "subcompiq-hero",
     title: "SubcompIQ",
@@ -152,6 +125,17 @@ export const featured: (Project & { cta: string; target: string })[] = [
     cta: "See the work",
     target: "#work",
   },
+  {
+    slug: "owly-hero",
+    title: "Owly",
+    label: "Founder · 2025 – 2026",
+    summary: "The startup before this one: AI workflows that take an ad campaign from a single brief to a published video.",
+    tech: OWLY_TECH,
+    scene: "owly",
+    sceneLabel: OWLY_LABEL,
+    cta: "See the work",
+    target: "#work",
+  },
 ];
 
 export const projects: Project[] = [
@@ -165,11 +149,7 @@ export const projects: Project[] = [
     scene: "subcompiq",
     sceneLabel: SUBCOMPIQ_LABEL,
     hint: "Hover a node",
-    steps: [
-      "A new bug comes in and the agents read it.",
-      "They walk a graph of past bugs and components to find related cases.",
-      "The bug lands on the sub-component most likely to own it.",
-    ],
+    how: "A new bug comes in and the agents read it. They walk a graph of past bugs and components to find related cases, and the bug lands on the sub-component most likely to own it.",
   },
   {
     slug: "diag-ai",
@@ -180,11 +160,20 @@ export const projects: Project[] = [
     scene: "diag",
     sceneLabel: DIAG_LABEL,
     hint: "Hover the logs to pause",
-    steps: [
-      "Logs from a failing run stream through the first layer.",
-      "It pulls out the key errors and drops the noise.",
-      "The second layer works out which components are involved.",
-    ],
+    how: "Logs from a failing run stream through the first layer, which pulls out the key errors and drops the noise. The second layer works out which components are involved.",
+  },
+  {
+    slug: "owly",
+    title: "Owly",
+    label: "Founder · 2025 – 2026",
+    summary:
+      "The startup before this one. AI workflows that take an ad campaign from a single brief to storyboards, video ads and social posts.",
+    tech: OWLY_TECH,
+    scene: "owly",
+    sceneLabel: OWLY_LABEL,
+    hint: "Hover a frame",
+    how: "It starts with research into the audience and the ads that already work for them. An AI editor then takes requests in plain words, like motion graphics, trims, color grading or B-roll, and whatever worked feeds the next campaign.",
+    href: OWLY_HREF,
   },
   {
     slug: "agentic-video-editor",
@@ -195,11 +184,7 @@ export const projects: Project[] = [
     scene: "video",
     sceneLabel: VIDEO_LABEL,
     hint: "Move across to scrub",
-    steps: [
-      "The editor runs as an MCP service over HTTP.",
-      "An agent sends commands like trim, cut, add a title or change the color.",
-      "Each command lands on the timeline, then the cut exports.",
-    ],
+    how: "The editor runs as an MCP service over HTTP. An agent sends commands like trim, cut, add a title or change the color, each one lands on the timeline, and then the cut exports.",
   },
   {
     slug: "expos",
@@ -210,11 +195,7 @@ export const projects: Project[] = [
     scene: "expos",
     sceneLabel: EXPOS_LABEL,
     hint: "Hover a memory frame",
-    steps: [
-      "A kernel, a BIOS and user programs for the XSM machine.",
-      "Every process runs in virtual memory with its own page table.",
-      "A miss raises a page fault, a free frame is found and the table updated.",
-    ],
+    how: "It has a kernel, a BIOS and user programs. Every process runs in virtual memory with its own page table, and a miss raises a page fault that finds a free frame and updates the table.",
   },
 ];
 
@@ -293,13 +274,26 @@ export const eras: Era[] = [
     title: "Owly",
     short: "OWLY",
     kicker: "Founder",
-    years: "2025 – Now",
+    years: "2025 – 2026",
     from: 2025.0,
-    to: null,
+    to: 2026.85,
     lane: 1,
     tone: "warm",
     body: "AI workflows that take an ad campaign from a single brief to a published video.",
-    href: owly.href,
+    href: OWLY_HREF,
+  },
+  {
+    id: "stealth",
+    title: "Stealth startup",
+    short: "STEALTH",
+    kicker: "Founder",
+    years: "2026 – Now",
+    from: 2026.86,
+    to: null,
+    lane: 0,
+    tone: "neutral",
+    body: "Something new, still under wraps. More when it's ready.",
+    redacted: true,
   },
 ];
 
@@ -334,8 +328,8 @@ export const offClock: OffClock[] = [
 ];
 
 export const about = [
-  "I'm an engineer in Bengaluru. I care about systems that hold up at scale, whether that's a database engine, an agent that triages real bugs or a pipeline that turns a brief into a finished ad.",
-  "I spent two years at Oracle on RDBMS internals and AI diagnostics. Before that I was a core developer on a decentralized protocol on Ethereum and Arweave. Owly is where the agent and video work comes together.",
+  "I care about systems that hold up at scale, whether that's a database engine, an agent that triages real bugs or a pipeline that turns a brief into a finished ad.",
+  "I spent two years at Oracle on RDBMS internals and AI diagnostics. Before that I was a core developer on a decentralized protocol on Ethereum and Arweave. Then I founded Owly, where the agent and video work came together. Now I'm on a new startup, still in stealth.",
   "I studied computer science at NIT Calicut. I like shipping early, measuring what changed and fixing it fast.",
 ];
 
@@ -346,32 +340,11 @@ export const stack: { group: string; items: string[] }[] = [
   { group: "Web", items: ["React", "Next.js", "Node.js"] },
 ];
 
-export const nav = [
-  { href: "#owly", label: "Owly" },
+/** Sections of the page, for the rail on the right edge. */
+export const sections = [
+  { href: "#top", label: "Intro" },
   { href: "#work", label: "Work" },
   { href: "#eras", label: "Eras" },
   { href: "#about", label: "About" },
   { href: "#contact", label: "Contact" },
 ];
-
-/** Plain-text context for the AI chat. Only public facts from this page. No phone number. */
-export function aiContext() {
-  return JSON.stringify(
-    {
-      name: site.fullName,
-      headline: site.headline.join(" "),
-      intro: site.intro,
-      location: site.location,
-      email: site.email,
-      social: Object.values(site.social).map((s) => `${s.label}: ${s.href}`),
-      owly: { ...owly, scene: undefined, sceneLabel: undefined, hint: undefined },
-      projects: [...projects, ...moreProjects].map(({ scene: _s, sceneLabel: _l, hint: _h, ...p }) => p),
-      eras: eras.map(({ id: _id, short: _short, from: _from, to: _to, lane: _lane, tone: _tone, ...e }) => e),
-      offClock: offClock.map(({ title, status, body }) => ({ title, status, body })),
-      about,
-      stack,
-    },
-    null,
-    2,
-  );
-}

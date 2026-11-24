@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { PixelScene } from "@/components/pixel/PixelScene";
 import type { Project } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { cn, joinWords } from "@/lib/utils";
 
 const PREVIEW_W = 300;
 const PREVIEW_H = 188;
@@ -74,7 +74,7 @@ export function AlsoBuilt({ items }: { items: Project[] }) {
 
   return (
     <div ref={listRef} className="relative mt-14 sm:mt-20" onPointerLeave={() => setHovered(null)}>
-      <p className="label">Also built</p>
+      <h3 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">Also built</h3>
       <ul className="mt-4 border-t border-line">
         {items.map((p, i) => {
           const expanded = open === i;
@@ -117,14 +117,12 @@ export function AlsoBuilt({ items }: { items: Project[] }) {
                   {p.summary}
                   {p.outcome ? <span className="text-accent-hi"> {p.outcome}.</span> : null}
                 </span>
-                <span className="flex flex-wrap items-center gap-2 pt-1 md:justify-end md:pt-0">
-                  {p.tech.map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
-                  ))}
+                <span className="flex items-baseline gap-4 font-mono text-[12px] text-faint md:justify-end">
+                  <span>{joinWords(p.tech)}</span>
                   {!finePointer ? (
-                    <span className="ml-1 font-mono text-[12px] text-faint">{expanded ? "Hide" : "Show"}</span>
+                    <span className="text-muted underline decoration-line-2 underline-offset-4">
+                      {expanded ? "Hide" : "Show"}
+                    </span>
                   ) : null}
                 </span>
               </button>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { pulse } from "@/lib/dj";
 import { createValueNoise, hexToRGBA32, maskGain, renderField, TEAL, type FieldMask, type FieldShape } from "@/lib/pixel";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,7 @@ type PixelFieldProps = Partial<Omit<FieldShape, "levels">> & {
   /** Light up pixels under the pointer (skipped on touch devices). */
   interactive?: boolean;
   seed?: number;
-  /** Where the field thins out: "hero" (behind the copy and at the bottom), "contact" (toward the top). */
+  /** Where the field thins out: "hero" (behind the copy and at the bottom), "contact" (behind the copy on the left, or toward the top on narrow screens). */
   mask?: FieldMask;
 };
 
@@ -84,7 +85,12 @@ export function PixelField({
       if (!image || !pixels) return;
       const useBoost = trail.length > 0;
       if (useBoost) buildBoost();
-      renderField(levels, cols, rows, t, shape, noise, useBoost ? boost : null, gain);
+      // In DJ mode the pool swells on every kick.
+      const beat = pulse();
+      const frameShape = beat
+        ? { ...shape, intensity: shape.intensity * (1 + 0.5 * beat), radius: shape.radius * (1 + 0.1 * beat) }
+        : shape;
+      renderField(levels, cols, rows, t, frameShape, noise, useBoost ? boost : null, gain);
       for (let i = 0; i < levels.length; i++) pixels[i] = lut[levels[i]];
       ctx.putImageData(image, 0, 0);
       if (!shown) {

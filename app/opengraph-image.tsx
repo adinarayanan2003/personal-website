@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { site } from "@/lib/data";
 import { createValueNoise, renderField, TEAL } from "@/lib/pixel";
 
-export const alt = `${site.name}. Founder and engineer, building Owly.`;
+export const alt = `${site.name}. ${site.headline[1]}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -92,9 +92,8 @@ export default function OpengraphImage() {
             padding: "64px 72px",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Mark />
-            <div style={{ display: "flex", fontSize: 30, color: "#f4efe7", letterSpacing: "-0.01em" }}>{site.name}</div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", color: "#f4efe7", fontSize: 76, lineHeight: 1.04, letterSpacing: "-0.04em" }}>
@@ -103,9 +102,11 @@ export default function OpengraphImage() {
           </div>
 
           <div style={{ display: "flex", gap: 28, fontSize: 24, color: "#969088" }}>
-            <div style={{ display: "flex" }}>Bengaluru, India</div>
+            <div style={{ display: "flex" }}>Databases</div>
             <div style={{ display: "flex", color: "#625e59" }}>/</div>
-            <div style={{ display: "flex" }}>AI agents, databases, video</div>
+            <div style={{ display: "flex" }}>AI agents</div>
+            <div style={{ display: "flex", color: "#625e59" }}>/</div>
+            <div style={{ display: "flex" }}>Video</div>
           </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { isOn, pulse } from "@/lib/dj";
+
 import { C, dotGrid, rng, type Gfx, type Scene } from "./engine";
 
 const BPM = 124;
@@ -23,7 +25,8 @@ export function dj(seed = 21): Scene {
     dotGrid(g);
 
     const beatPhase = (t * BPM) / 60;
-    const kick = Math.exp(-(beatPhase % 1) * 6);
+    // While DJ mode plays, lock to the real loop instead of the scene's own clock.
+    const kick = isOn() ? pulse() : Math.exp(-(beatPhase % 1) * 6);
 
     // Waveform across the top, played part brighter.
     const wy = 4;

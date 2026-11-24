@@ -101,7 +101,9 @@ export function PixelScene({
         revealPending = false;
         revealStart = now;
       }
-      let progress = 1;
+      // Until the dissolve-in starts, stay blank. Otherwise the first frame (drawn on mount,
+      // before the observer reports the scene in view) flashes fully, vanishes, then dissolves in.
+      let progress = revealPending ? 0 : 1;
       if (revealStart >= 0) {
         progress = (now - revealStart) / REVEAL_MS;
         if (progress >= 1) {

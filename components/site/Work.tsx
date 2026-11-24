@@ -8,11 +8,9 @@ export function Work() {
     <section id="work" aria-labelledby="work-title" className="page-x pt-24 sm:pt-32">
       <SectionHeading
         id="work-title"
-        index="02"
-        eyebrow="Selected work"
         title={
           <>
-            Agents at Oracle, video tools,
+            Agents at Oracle, a startup,
             <br className="hidden sm:block" /> and an OS from scratch.
           </>
         }

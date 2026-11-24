@@ -156,7 +156,7 @@ const smooth = (a: number, b: number, v: number) => {
   return x * x * (3 - 2 * x);
 };
 
-/** Per-cell gain for a mask preset. `wide` is true when the hero copy sits in a left column. */
+/** Per-cell gain for a mask preset. `wide` is true at desktop widths, where copy sits in a left column. */
 export function maskGain(mask: FieldMask, cols: number, rows: number, wide: boolean) {
   if (mask === "none") return null;
   const gain = new Float32Array(cols * rows);
@@ -172,7 +172,8 @@ export function maskGain(mask: FieldMask, cols: number, rows: number, wide: bool
           : 1 - smooth(0.2, 0.95, Math.hypot((1 - fx) * 0.85, fy * 1.7));
         g = (0.22 + 0.78 * side) * (1 - smooth(0.6, 0.98, fy));
       } else if (mask === "contact") {
-        g = smooth(0.12, 0.7, fy);
+        // Wide: clear on the left where the copy sits. Narrow: clear at the top.
+        g = wide ? smooth(0.3, 0.78, fx) : smooth(0.35, 0.85, fy);
       }
       gain[y * cols + x] = g;
     }
