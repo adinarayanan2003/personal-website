@@ -66,7 +66,7 @@ export const site = {
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://personal-website-rho-ashen.vercel.app"),
+      : "https://personal-website-adi-narayanans-projects.vercel.app"),
   social: {
     github: { label: "GitHub", handle: "adinarayanan2003", href: "https://github.com/adinarayanan2003" },
     linkedin: {
