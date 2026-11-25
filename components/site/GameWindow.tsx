@@ -339,7 +339,7 @@ export function GameWindow({ game, onClose }: { game: GameName; onClose: () => v
               <button
                 type="button"
                 onClick={() => startRef.current()}
-                className="px-frame px-sm inline-flex h-10 items-center gap-2 bg-ink px-5 text-[14px] font-medium text-bg [--frame:transparent] hover:bg-white"
+                className="px-frame px-sm inline-flex h-10 items-center gap-2 bg-ink px-5 text-[14px] font-medium text-bg [--frame:transparent] transition-colors hover:bg-accent-hi"
               >
                 <svg viewBox="0 0 8 8" aria-hidden className="size-2.5" shapeRendering="crispEdges" fill="currentColor">
                   <path d="M1 0h2v1H1zM1 1h3v1H1zM1 2h4v1H1zM1 3h5v2H1zM1 5h4v1H1zM1 6h3v1H1zM1 7h2v1H1z" />
@@ -359,7 +359,7 @@ export function GameWindow({ game, onClose }: { game: GameName; onClose: () => v
                     ref={againRef}
                     type="button"
                     onClick={() => startRef.current()}
-                    className="px-frame px-sm inline-flex h-10 items-center bg-ink px-4 text-[14px] font-medium text-bg [--frame:transparent] hover:bg-white"
+                    className="px-frame px-sm inline-flex h-10 items-center bg-ink px-4 text-[14px] font-medium text-bg [--frame:transparent] transition-colors hover:bg-accent-hi"
                   >
                     Play again
                   </button>

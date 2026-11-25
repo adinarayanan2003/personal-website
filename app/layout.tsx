@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { DjMode } from "@/components/site/DjMode";
 import { ThemeKeys } from "@/components/site/ThemeSwitch";
 import { site } from "@/lib/data";
-import { THEME_BOOT_SCRIPT } from "@/lib/theme";
+import { THEME_BOOT_SCRIPT, themeCss } from "@/lib/theme";
 
 import "./globals.css";
 
@@ -73,6 +73,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
         <noscript>
           <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
         </noscript>

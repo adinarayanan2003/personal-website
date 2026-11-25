@@ -34,7 +34,7 @@ export function Contact() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a
                   href={`mailto:${site.email}`}
-                  className="px-frame px-sm inline-flex h-11 items-center gap-2 bg-ink px-5 text-[14.5px] font-medium text-bg transition-colors [--frame:transparent] hover:bg-white"
+                  className="px-frame px-sm inline-flex h-11 items-center gap-2 bg-ink px-5 text-[14.5px] font-medium text-bg transition-colors [--frame:transparent] transition-colors hover:bg-accent-hi"
                 >
                   Email me
                   <ArrowUpRight className="size-3.5" />

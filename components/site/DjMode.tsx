@@ -74,7 +74,7 @@ export function DjMode() {
           <button
             type="button"
             onClick={stop}
-            className="px-frame px-sm h-7 bg-ink px-3 text-[11px] font-medium text-bg [--frame:transparent] hover:bg-white"
+            className="px-frame px-sm h-7 bg-ink px-3 text-[11px] font-medium text-bg [--frame:transparent] transition-colors hover:bg-accent-hi"
           >
             Stop
           </button>

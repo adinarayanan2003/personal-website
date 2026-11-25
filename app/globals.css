@@ -7,7 +7,7 @@
   --color-ink: #f4efe7;
   --color-ink-2: #cdc6ba;
   --color-muted: #969088;
-  --color-faint: #625e59;
+  --color-faint: #6f6a64;
   --color-line: rgb(244 239 231 / 0.09);
   --color-line-2: rgb(244 239 231 / 0.16);
   --color-accent: #2fc9cf;
@@ -19,57 +19,7 @@
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Hidden themes (see lib/theme.ts). Same token names, different cartridge. */
-:root[data-theme="gameboy"] {
-  --color-bg: #0b1d0c;
-  --color-panel: #102612;
-  --color-raise: #163018;
-  --color-ink: #d4ec7a;
-  --color-ink-2: #b4d050;
-  --color-muted: #7f9f3a;
-  --color-faint: #4a6a28;
-  --color-line: rgb(180 208 80 / 0.12);
-  --color-line-2: rgb(180 208 80 / 0.22);
-  --color-accent: #8bac0f;
-  --color-accent-hi: #c8e85a;
-  --color-accent-dim: #306230;
-  --color-warm: #c8e85a;
-  --color-warm-dim: #6f8f2a;
-}
-
-:root[data-theme="amber"] {
-  --color-bg: #110b03;
-  --color-panel: #181005;
-  --color-raise: #211708;
-  --color-ink: #ffcf70;
-  --color-ink-2: #f0aa30;
-  --color-muted: #b07a1c;
-  --color-faint: #6a4a12;
-  --color-line: rgb(255 176 0 / 0.12);
-  --color-line-2: rgb(255 176 0 / 0.22);
-  --color-accent: #ffb000;
-  --color-accent-hi: #ffd060;
-  --color-accent-dim: #7a5208;
-  --color-warm: #ff7a1a;
-  --color-warm-dim: #a04a10;
-}
-
-:root[data-theme="cga"] {
-  --color-bg: #000000;
-  --color-panel: #0a0a0a;
-  --color-raise: #151515;
-  --color-ink: #ffffff;
-  --color-ink-2: #d8d8d8;
-  --color-muted: #aaaaaa;
-  --color-faint: #5f5f5f;
-  --color-line: rgb(255 255 255 / 0.12);
-  --color-line-2: rgb(255 255 255 / 0.22);
-  --color-accent: #55ffff;
-  --color-accent-hi: #aaffff;
-  --color-accent-dim: #00aaaa;
-  --color-warm: #ff55ff;
-  --color-warm-dim: #aa00aa;
-}
+/* Other themes are generated from lib/theme.ts (themeCss) and injected by layout.tsx. */
 
 @theme inline {
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -103,7 +53,7 @@
 
   ::selection {
     background: color-mix(in srgb, var(--color-accent) 32%, transparent);
-    color: #fff;
+    color: var(--color-ink);
   }
 
   :focus-visible {

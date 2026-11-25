@@ -34,14 +34,28 @@ export function DeepDive({ project, next }: { project: Project; next: Project })
     );
     stepRefs.current.forEach((el) => el && io.observe(el));
 
-    // Once the outro reaches the middle of the screen, show the whole diagram.
-    const outro = new IntersectionObserver(([e]) => setDone(e.boundingClientRect.top < window.innerHeight * 0.55), {
-      threshold: [0, 0.25, 0.5, 1],
-    });
-    if (outroRef.current) outro.observe(outroRef.current);
+    // Show the whole diagram once the outro is well into view, or the page can't scroll any
+    // further (on mid-size screens the pinned diagram is tall, so the outro may never reach
+    // the middle before the page ends).
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const el = outroRef.current;
+      if (!el) return;
+      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      setDone(el.getBoundingClientRect().top < window.innerHeight * 0.6 || atBottom);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       io.disconnect();
-      outro.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
@@ -67,7 +81,8 @@ export function DeepDive({ project, next }: { project: Project; next: Project })
 
       <div className="mt-12 grid gap-10 sm:mt-16 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-14">
         {/* Pinned diagram: top of the screen on phones, left column on desktop. */}
-        <div className="sticky top-3 z-10 self-start lg:top-[max(24px,calc(50svh-260px))]">
+        {/* On phones the page background goes behind it, so steps scroll underneath cleanly. */}
+        <div className="sticky top-0 z-10 mx-[calc(clamp(20px,4vw,48px)*-1)] self-start bg-bg px-[clamp(20px,4vw,48px)] pb-3 pt-3 lg:top-[max(24px,calc(50svh-260px))] lg:mx-0 lg:bg-transparent lg:px-0 lg:pb-0 lg:pt-0">
           <div className="px-frame px-lg relative aspect-[16/10] overflow-hidden bg-panel [--frame:var(--color-line-2)]">
             <PixelScene name={project.scene} label={project.sceneLabel} focus={focus} className="absolute inset-0" />
           </div>

@@ -201,7 +201,7 @@ function BeatMakerWindow({ initial, onClose }: { initial: Pattern; onClose: () =
           <button
             type="button"
             onClick={() => (playing ? stop() : void playPattern(pat))}
-            className="px-frame px-sm inline-flex h-10 items-center gap-2 bg-ink px-4 text-[14px] font-medium text-bg [--frame:transparent] hover:bg-white"
+            className="px-frame px-sm inline-flex h-10 items-center gap-2 bg-ink px-4 text-[14px] font-medium text-bg [--frame:transparent] transition-colors hover:bg-accent-hi"
           >
             {playing ? "Stop" : "Play"}
           </button>
