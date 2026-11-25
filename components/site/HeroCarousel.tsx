@@ -30,7 +30,7 @@ export function HeroCarousel({ slides }: { slides: Slide[] }) {
         role="group"
         aria-roledescription="carousel"
         aria-label="Recent work"
-        className="glass px-frame overflow-hidden bg-[rgb(24_24_23/0.86)] [--frame:var(--color-line-2)]"
+        className="glass px-frame overflow-hidden bg-[color-mix(in_srgb,var(--color-panel)_86%,transparent)] [--frame:var(--color-line-2)]"
       >
         <div className="relative aspect-[16/9] border-b border-line">
           <PixelScene

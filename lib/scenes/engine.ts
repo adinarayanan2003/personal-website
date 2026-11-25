@@ -25,6 +25,7 @@ export const C = {
   INK: 12,
 } as const;
 
+/** The default ("pixel") theme. Canvases read the active theme through sceneLUT() in lib/theme.ts. */
 export const PALETTE = [
   "#000000", // unused, index 0 is transparent
   "#232625", // GRID  faint structure

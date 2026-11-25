@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 import { PixelField } from "@/components/pixel/PixelField";
+import { useThemeName } from "@/components/site/ThemeSwitch";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { Redacted } from "@/components/ui/Redacted";
 import type { Era } from "@/lib/data";
-import { hexToRGBA32, TEAL } from "@/lib/pixel";
-import { C, Gfx, PALETTE } from "@/lib/scenes/engine";
+import { C, Gfx } from "@/lib/scenes/engine";
+import { sceneLUT, subscribeTheme, THEMES, type ThemeName } from "@/lib/theme";
 import { cn, joinWords } from "@/lib/utils";
 
-const LUT = new Uint32Array(PALETTE.map((hex, i) => (i === 0 ? 0 : hexToRGBA32(hex))));
 const Y0 = 2020;
 /** The ruler always runs at least a year past today, so a chapter that just started still has room to show. */
 const rulerEnd = (now: number) => Math.ceil(now + 1);
@@ -31,11 +31,9 @@ const TEXT_TONE: Record<Era["tone"], string> = {
 };
 
 /** The field behind the map while scrubbing takes the color of the chapter you're in. */
-const FIELD_TONE: Record<Era["tone"], string[]> = {
-  neutral: ["#222221", "#302f2d", "#45433f"],
-  "teal-dim": TEAL,
-  teal: TEAL,
-  warm: ["#2e1a11", "#5a2f1a", "#94522e"],
+const fieldTone = (theme: ThemeName, tone: Era["tone"]) => {
+  const t = THEMES[theme];
+  return tone === "warm" ? t.warmField : tone === "neutral" ? t.neutralField : t.field;
 };
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -159,6 +157,7 @@ function EraMap({
   const release = useRef<() => void>(() => {});
   // Mount the tinted field on first use, then keep it so it can fade out.
   const [fieldOn, setFieldOn] = useState(false);
+  const themeName = useThemeName();
 
   litRef.current = lit;
   scrubRef.current = scrub;
@@ -303,6 +302,7 @@ function EraMap({
 
       const out = pixels;
       const buf = g.buf;
+      const LUT = sceneLUT();
       for (let i = 0; i < buf.length; i++) out[i] = LUT[buf[i]];
       ctx.putImageData(image, 0, 0);
 
@@ -394,6 +394,7 @@ function EraMap({
       schedule();
     });
     resizeObserver.observe(wrap);
+    const unsubscribeTheme = subscribeTheme(schedule);
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
@@ -414,6 +415,7 @@ function EraMap({
       if (timer) window.clearTimeout(timer);
       cancelAnimationFrame(back);
       resizeObserver.disconnect();
+      unsubscribeTheme();
       io.disconnect();
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);
@@ -445,7 +447,7 @@ function EraMap({
     <div className="px-frame isolate overflow-hidden bg-panel px-3 py-4 sm:px-5 sm:py-5">
       {fieldOn ? (
         <PixelField
-          palette={FIELD_TONE[tint]}
+          palette={[...fieldTone(themeName, tint)]}
           originX={0.5}
           originY={0.45}
           radius={0.7}

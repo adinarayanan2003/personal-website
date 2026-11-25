@@ -27,7 +27,7 @@ export function CopyEmail({ email, className }: { email: string; className?: str
       type="button"
       onClick={copy}
       className={cn(
-        "glass px-frame px-sm group inline-flex h-11 items-center gap-3 px-4 font-mono text-[12.5px] text-ink-2 transition-colors [--frame:var(--color-line-2)] hover:text-ink hover:[--frame:rgb(244_239_231/0.35)]",
+        "glass px-frame px-sm group inline-flex h-11 items-center gap-3 px-4 font-mono text-[12.5px] text-ink-2 transition-colors [--frame:var(--color-line-2)] hover:text-ink hover:[--frame:color-mix(in_srgb,var(--color-ink)_35%,transparent)]",
         className,
       )}
     >
@@ -36,7 +36,7 @@ export function CopyEmail({ email, className }: { email: string; className?: str
         aria-live="polite"
         className={cn(
           "border px-2 py-0.5 text-[10.5px] uppercase tracking-[0.1em] transition-colors",
-          copied ? "border-[rgb(47_201_207/0.45)] text-accent-hi" : "border-line-2 text-muted group-hover:text-ink-2",
+          copied ? "border-[color-mix(in_srgb,var(--color-accent)_45%,transparent)] text-accent-hi" : "border-line-2 text-muted group-hover:text-ink-2",
         )}
       >
         {copied ? "Copied" : "Copy"}

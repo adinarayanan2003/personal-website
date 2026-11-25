@@ -36,6 +36,11 @@ Other scripts:
 - **Time travel:** drag along the eras timeline (or focus it and use the arrow keys) to pull the
   "now" marker back. The chapters you were in at that moment light up.
 - **Redacted:** the stealth chapter stays under marker bars. Hovering decodes about half of it.
+- **Themes:** the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) or the swatches in the footer switch between
+  Pixel, Paper (light), Blueprint, Synthwave, Dusk, Game Boy, Amber terminal and CGA. All theme
+  colours live in `lib/theme.ts`, including the CSS tokens (emitted by `themeCss()`). New themes
+  should keep body text at 12:1 or more against the background, muted text at 4.5:1 on every
+  surface, the faintest labels at 3:1, and text colours close to neutral.
 
 ## Editing content
 

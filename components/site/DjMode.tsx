@@ -2,13 +2,23 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 
-import { BPM, bands, isOn, pulse, stop, subscribe, toggle } from "@/lib/dj";
+import { BeatMakerButton } from "@/components/site/BeatMaker";
+import { BPM, bands, getBpm, isOn, pulse, stop, subscribe, toggle } from "@/lib/dj";
 import { hexToRGBA32 } from "@/lib/pixel";
+import { getTheme, theme } from "@/lib/theme";
 
 const ROWS = 7;
-// Bottom rows teal, top rows warm, like the meters on the DJ scene's mixer.
-const RAMP = ["#0e6c72", "#0e6c72", "#1eaab1", "#1eaab1", "#7ff3f6", "#b8653a", "#f2a068"].map((c) => hexToRGBA32(c));
-const DIM = hexToRGBA32("#232625");
+/** Spectrum colours for the current theme: bottom rows cool, top rows warm, like the mixer meters. */
+let rampFor = "";
+let RAMP: number[] = [];
+let DIM = 0;
+function spectrumColours() {
+  if (rampFor !== getTheme()) {
+    rampFor = getTheme();
+    RAMP = theme().spectrum.map((c) => hexToRGBA32(c));
+    DIM = hexToRGBA32(theme().spectrumBase);
+  }
+}
 
 export function useDjOn() {
   return useSyncExternalStore(subscribe, isOn, () => false);
@@ -21,6 +31,7 @@ export function useDjOn() {
  */
 export function DjMode() {
   const playing = useDjOn();
+  const bpm = useSyncExternalStore(subscribe, getBpm, () => BPM);
 
   useEffect(() => {
     let last = "";
@@ -58,12 +69,12 @@ export function DjMode() {
         >
           <BeatDot />
           <span>DJ mode</span>
-          <span className="text-faint">{BPM} BPM</span>
+          <span className="text-faint">{bpm} BPM</span>
           <span className="hidden text-faint sm:inline">Esc to stop</span>
           <button
             type="button"
             onClick={stop}
-            className="px-frame px-sm h-7 bg-ink px-3 text-[11px] font-medium text-bg [--frame:transparent] hover:bg-white"
+            className="px-frame px-sm h-7 bg-ink px-3 text-[11px] font-medium text-bg [--frame:transparent] transition-colors hover:bg-accent-hi"
           >
             Stop
           </button>
@@ -123,6 +134,7 @@ function Spectrum() {
       // Stepped at about 20 fps, the same chunky motion as the rest of the pixel work.
       if (now - lastDraw < 50 || !image || !pixels) return;
       lastDraw = now;
+      spectrumColours();
       const columnsPerBand = 3;
       const level = bands(Math.ceil(cols / columnsPerBand));
       pixels.fill(0);
@@ -176,8 +188,9 @@ export function DjPlayButton() {
             <path d="M1 0h2v1H1zM1 1h3v1H1zM1 2h4v1H1zM1 3h5v2H1zM1 5h4v1H1zM1 6h3v1H1zM1 7h2v1H1z" />
           </svg>
         )}
-        {playing ? "Stop the set" : "Play a short set"}
+        {playing ? "Stop the music" : "Play a short set"}
       </button>
+      <BeatMakerButton />
       <span className="label hidden text-[10.5px] text-faint [@media(hover:hover)]:inline">or type DJ anywhere</span>
     </div>
   );

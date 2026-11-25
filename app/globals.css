@@ -7,7 +7,7 @@
   --color-ink: #f4efe7;
   --color-ink-2: #cdc6ba;
   --color-muted: #969088;
-  --color-faint: #625e59;
+  --color-faint: #6f6a64;
   --color-line: rgb(244 239 231 / 0.09);
   --color-line-2: rgb(244 239 231 / 0.16);
   --color-accent: #2fc9cf;
@@ -18,6 +18,8 @@
 
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* Other themes are generated from lib/theme.ts (themeCss) and injected by layout.tsx. */
 
 @theme inline {
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -50,8 +52,8 @@
   }
 
   ::selection {
-    background: rgb(47 201 207 / 0.32);
-    color: #fff;
+    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+    color: var(--color-ink);
   }
 
   :focus-visible {
@@ -69,12 +71,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2a29;
+    background: var(--color-raise);
     border: 3px solid var(--color-bg);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a3a38;
+    background: var(--color-faint);
   }
 }
 
@@ -96,7 +98,7 @@
   }
 
   .glass {
-    background: rgb(28 28 27 / 0.62);
+    background: color-mix(in srgb, var(--color-panel) 62%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     backdrop-filter: blur(16px) saturate(140%);
   }
@@ -178,7 +180,7 @@
     font-weight: 500;
     color: var(--color-ink);
     text-decoration: underline;
-    text-decoration-color: rgb(244 239 231 / 0.35);
+    text-decoration-color: color-mix(in srgb, var(--color-ink) 35%, transparent);
     text-decoration-thickness: 1px;
     text-underline-offset: 6px;
     transition: text-decoration-color 0.2s var(--ease-soft);

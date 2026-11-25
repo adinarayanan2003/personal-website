@@ -1,4 +1,9 @@
+import type { Focus } from "@/components/pixel/PixelScene";
+import type { GameName } from "@/lib/games";
 import type { SceneName } from "@/lib/scenes";
+
+/** One step of a project's deep dive: a short heading, a sentence, and the part of the diagram to light. */
+export type DiveStep = { title: string; text: string; focus: Focus | null };
 
 export type Project = {
   slug: string;
@@ -18,6 +23,12 @@ export type Project = {
   /** How it works, in two or three plain sentences. */
   how?: string;
   href?: string;
+  /** Deep dive at /work/[slug]: the diagram plays step by step as these scroll past. */
+  dive?: DiveStep[];
+  /** Optional longer write-up shown after the steps, one paragraph per entry. */
+  story?: string[];
+  /** A playable version of the diagram (see lib/games). */
+  game?: GameName;
 };
 
 export type Era = {
@@ -141,6 +152,15 @@ export const featured: (Project & { cta: string; target: string })[] = [
 export const projects: Project[] = [
   {
     slug: "subcompiq",
+    dive: [
+      { title: "A bug arrives", text: "A new bug comes in and the agents read it.", focus: [0, 0.28, 0.3, 0.5] },
+      {
+        title: "Walking the graph",
+        text: "They walk a graph of past bugs and components to find related cases.",
+        focus: [0.2, 0.08, 0.78, 0.86],
+      },
+      { title: "Routed", text: "The bug lands on the sub-component most likely to own it.", focus: [0.54, 0.1, 0.44, 0.82] },
+    ],
     title: "SubcompIQ",
     label: "Oracle · AI agents",
     summary: "A multi-agent system with Graph RAG that predicts a bug's problem type and the sub-component it belongs to.",
@@ -153,6 +173,11 @@ export const projects: Project[] = [
   },
   {
     slug: "diag-ai",
+    dive: [
+      { title: "Logs in", text: "Logs from a failing run stream through the first layer.", focus: [0, 0.04, 0.5, 0.96] },
+      { title: "Errors out", text: "It pulls out the key errors and drops the noise.", focus: [0.5, 0, 0.26, 0.8] },
+      { title: "Components found", text: "The second layer works out which components are involved.", focus: [0.76, 0, 0.24, 0.78] },
+    ],
     title: "DIAG AI",
     label: "Oracle · AI agents",
     summary: "Layered agents that automate bug analysis, so an engineer starts from the errors that matter.",
@@ -164,6 +189,20 @@ export const projects: Project[] = [
   },
   {
     slug: "owly",
+    dive: [
+      { title: "Ideation", text: "Research the audience and reverse engineer ads that already work.", focus: [0.04, 0, 0.92, 0.3] },
+      { title: "Creation", text: "Storyboards, moodboards, videos and static posts from one brief.", focus: [0, 0.18, 1, 0.66] },
+      {
+        title: "AI editor",
+        text: "Ask for motion graphics, trims, color grading or B-roll in plain words.",
+        focus: [0.22, 0.18, 0.56, 0.66],
+      },
+      {
+        title: "Publish and learn",
+        text: "Ship the ads, see what worked, feed it into the next campaign.",
+        focus: [0, 0.74, 1, 0.26],
+      },
+    ],
     title: "Owly",
     label: "Founder · 2025 – 2026",
     summary:
@@ -177,6 +216,15 @@ export const projects: Project[] = [
   },
   {
     slug: "agentic-video-editor",
+    dive: [
+      { title: "A service", text: "The editor runs as an MCP service over HTTP.", focus: [0, 0, 0.62, 0.6] },
+      {
+        title: "Commands",
+        text: "An agent sends commands like trim, cut, add a title or change the color.",
+        focus: [0.6, 0, 0.4, 0.62],
+      },
+      { title: "The cut", text: "Each command lands on the timeline, then the cut exports.", focus: [0, 0.6, 1, 0.4] },
+    ],
     title: "Agentic Video Editor",
     label: "AI video · MCP",
     summary: "An open-source video editor turned into an agent service, so video can be edited with plain-language commands.",
@@ -188,6 +236,16 @@ export const projects: Project[] = [
   },
   {
     slug: "expos",
+    game: "expos",
+    dive: [
+      { title: "From scratch", text: "A kernel, a BIOS and user programs for the XSM machine.", focus: null },
+      { title: "Virtual memory", text: "Every process runs in virtual memory with its own page table.", focus: [0, 0, 0.38, 1] },
+      {
+        title: "Page faults",
+        text: "A miss raises a page fault, a free frame is found and the table updated.",
+        focus: [0.36, 0, 0.64, 1],
+      },
+    ],
     title: "Project eXPOS",
     label: "Systems · NIT Calicut",
     summary: "An experimental operating system written from scratch for the XSM machine.",
@@ -212,6 +270,7 @@ export const moreProjects: Project[] = [
   },
   {
     slug: "dns-resolver",
+    game: "dns",
     title: "Recursive DNS Resolver",
     label: "Systems",
     summary: "A DNS server that walks the full resolution chain, with caching, CNAME chaining and TCP fallback.",
@@ -221,6 +280,7 @@ export const moreProjects: Project[] = [
   },
   {
     slug: "sarcophagus",
+    game: "sarcophagus",
     title: "Sarcophagus",
     label: "Protocol",
     summary: "Core developer on a decentralized dead man's switch.",

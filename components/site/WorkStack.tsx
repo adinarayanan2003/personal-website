@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+import Link from "next/link";
+
 import { PixelScene } from "@/components/pixel/PixelScene";
-import { ArrowUpRight } from "@/components/ui/icons";
+import { PlayButton } from "@/components/site/GameWindow";
+import { ArrowRight, ArrowUpRight } from "@/components/ui/icons";
 import type { Project } from "@/lib/data";
 import { joinWords } from "@/lib/utils";
 
@@ -102,12 +105,21 @@ export function WorkStack({ projects }: { projects: Project[] }) {
                   </p>
                 ) : null}
 
-                {project.href ? (
-                  <a href={project.href} target="_blank" rel="noreferrer" className="text-link mt-6 self-start text-[14.5px]">
-                    Visit {new URL(project.href).hostname.replace(/^www\./, "")}
-                    <ArrowUpRight className="up-right size-3.5" />
-                  </a>
-                ) : null}
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  {project.dive?.length ? (
+                    <Link href={`/work/${project.slug}`} className="text-link text-[14.5px]">
+                      Step by step
+                      <ArrowRight className="size-3.5" />
+                    </Link>
+                  ) : null}
+                  {project.game ? <PlayButton game={project.game} className="text-[14.5px]" /> : null}
+                  {project.href ? (
+                    <a href={project.href} target="_blank" rel="noreferrer" className="text-link text-[14.5px]">
+                      Visit {new URL(project.href).hostname.replace(/^www\./, "")}
+                      <ArrowUpRight className="up-right size-3.5" />
+                    </a>
+                  ) : null}
+                </div>
 
                 <div className="mt-auto flex flex-wrap items-end justify-between gap-x-6 gap-y-2 pt-7 text-[13.5px] leading-relaxed">
                   <p className="text-faint">

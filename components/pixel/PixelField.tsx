@@ -2,15 +2,18 @@
 
 import { useEffect, useRef } from "react";
 
+import { useThemeName } from "@/components/site/ThemeSwitch";
+
 import { pulse } from "@/lib/dj";
-import { createValueNoise, hexToRGBA32, maskGain, renderField, TEAL, type FieldMask, type FieldShape } from "@/lib/pixel";
+import { createValueNoise, hexToRGBA32, maskGain, renderField, type FieldMask, type FieldShape } from "@/lib/pixel";
+import { THEMES } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 type PixelFieldProps = Partial<Omit<FieldShape, "levels">> & {
   className?: string;
   /** Size of one pixel in CSS px. Snapped so it lands on whole device pixels. */
   cell?: number;
-  /** Colors for levels 1..n. Level 0 is transparent, so the parent's background shows. */
+  /** Colors for levels 1..n. Level 0 is transparent, so the parent's background shows. Defaults to the theme's field. */
   palette?: string[];
   /** Ambient animation steps per second. Low on purpose, it gives the stepped pixel feel. */
   fps?: number;
@@ -30,7 +33,7 @@ const TRAIL_MAX = 56;
 export function PixelField({
   className,
   cell = 6,
-  palette = TEAL,
+  palette,
   fps = 12,
   interactive = true,
   seed = 11,
@@ -42,7 +45,8 @@ export function PixelField({
 }: PixelFieldProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const paletteKey = palette.join(",");
+  const themeName = useThemeName();
+  const paletteKey = (palette ?? THEMES[themeName].field).join(",");
 
   useEffect(() => {
     const wrap = wrapRef.current;
