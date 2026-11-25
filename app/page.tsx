@@ -1,6 +1,5 @@
 import { About } from "@/components/site/About";
 import { Contact } from "@/components/site/Contact";
-import { DjMode } from "@/components/site/DjMode";
 import { ErasSection } from "@/components/site/ErasSection";
 import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/site/Hero";
@@ -33,7 +32,6 @@ export default function Home() {
       </main>
       <Footer />
       <SectionRail />
-      <DjMode />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}

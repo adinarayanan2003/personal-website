@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { PixelScene } from "@/components/pixel/PixelScene";
+import { PlayButton } from "@/components/site/GameWindow";
 import type { Project } from "@/lib/data";
 import { cn, joinWords } from "@/lib/utils";
 
@@ -126,6 +127,12 @@ export function AlsoBuilt({ items }: { items: Project[] }) {
                   ) : null}
                 </span>
               </button>
+              {/* Outside the row button: a button can't sit inside another. Lines up with the summary column. */}
+              {p.game ? (
+                <div className="-mt-2 pb-5 md:pl-[292px]">
+                  <PlayButton game={p.game} className="text-[14px]" />
+                </div>
+              ) : null}
               {!finePointer && expanded ? (
                 <div className="px-frame mb-5 overflow-hidden bg-panel [--s:4px]">
                   <PixelScene name={p.scene} label={p.sceneLabel} className="aspect-[16/10] w-full" />

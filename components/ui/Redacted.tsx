@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useThemeName } from "@/components/site/ThemeSwitch";
+import { THEMES } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-/** Marker shades for hidden letters. They flicker between these while the card is in use. */
-const SHADES = ["#3d3b38", "#4f4c48", "#34332f", "#46433f"];
 const IDLE = 0.18;
 const HOVER = 0.58; // never all the way: it's still a secret
 
@@ -32,6 +32,8 @@ export function Redacted({ text, active, className }: { text: string; active: bo
   const [level, setLevel] = useState(IDLE);
   const [seed, setSeed] = useState(0);
   const levelRef = useRef(IDLE);
+  // Marker shades for hidden letters; they flicker between these while the card is in use.
+  const SHADES = THEMES[useThemeName()].redact;
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

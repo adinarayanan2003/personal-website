@@ -2,13 +2,20 @@
 
 import { useEffect, useRef } from "react";
 
-import { hexToRGBA32 } from "@/lib/pixel";
 import { SCENES, type SceneName } from "@/lib/scenes";
-import { BAYER_8, Gfx, PALETTE, type Pointer, type Scene } from "@/lib/scenes/engine";
+import { BAYER_8, C, Gfx, type Pointer, type Scene } from "@/lib/scenes/engine";
+import { sceneLUT, subscribeTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const LUT = new Uint32Array(PALETTE.map((hex, i) => (i === 0 ? 0 : hexToRGBA32(hex))));
 const REVEAL_MS = 560;
+
+/** A region of the scene as fractions of its size: [x, y, width, height]. */
+export type Focus = readonly [number, number, number, number];
+
+/** What each palette colour fades to outside the spotlight: everything drops to its dimmest shade. */
+const DIM = new Uint8Array(13);
+DIM.set([0, C.GRID, C.T1, C.T1, C.T1, C.T2, C.W1, C.W1, C.W1, C.N1, C.N1, C.N2, C.N2]);
+const FEATHER = 5; // cells over which the spotlight edge fades
 const STILL_AT = 3.4;
 
 type PixelSceneProps = {
@@ -24,6 +31,8 @@ type PixelSceneProps = {
   active?: boolean;
   /** Stop drawing without replaying the dissolve (used when a stacked card is covered). */
   paused?: boolean;
+  /** Light one region and dim the rest with a dither. `null` lifts the spotlight. */
+  focus?: Focus | null;
   seed?: number;
 };
 
@@ -36,14 +45,15 @@ export function PixelScene({
   fps = 15,
   active = true,
   paused = false,
+  focus = null,
   seed = 7,
 }: PixelSceneProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const flags = useRef({ active, paused });
+  const flags = useRef({ active, paused, focus });
   const kick = useRef<() => void>(() => {});
 
-  flags.current = { active, paused };
+  flags.current = { active, paused, focus };
 
   useEffect(() => {
     kick.current();
@@ -88,6 +98,42 @@ export function PixelScene({
       return pointer;
     };
 
+    // The spotlight glides between regions and fades in and out, instead of jumping.
+    const spot = { x: 0, y: 0, w: 1, h: 1, strength: 0 };
+    const spotlight = (dt: number) => {
+      const target = flags.current.focus;
+      const k = reduceMotion || dt === 0 ? 1 : Math.min(1, dt * 5);
+      if (target) {
+        spot.x += (target[0] - spot.x) * k;
+        spot.y += (target[1] - spot.y) * k;
+        spot.w += (target[2] - spot.w) * k;
+        spot.h += (target[3] - spot.h) * k;
+      }
+      spot.strength += ((target ? 1 : 0) - spot.strength) * k;
+      if (spot.strength < 0.02) return;
+
+      const cols = g.cols;
+      const rows = g.rows;
+      const buf = g.buf;
+      const x0 = spot.x * cols;
+      const y0 = spot.y * rows;
+      const x1 = (spot.x + spot.w) * cols;
+      const y1 = (spot.y + spot.h) * rows;
+      for (let y = 0; y < rows; y++) {
+        const dy = y < y0 ? y0 - y : y > y1 ? y - y1 : 0;
+        for (let x = 0; x < cols; x++) {
+          const dx = x < x0 ? x0 - x : x > x1 ? x - x1 : 0;
+          if (!dx && !dy) continue;
+          const i = y * cols + x;
+          if (!buf[i]) continue;
+          const amt = Math.min(1, Math.hypot(dx, dy) / FEATHER) * spot.strength;
+          const threshold = BAYER_8[((y & 7) << 3) | (x & 7)];
+          if (threshold < amt * 0.7) buf[i] = 0;
+          else if (amt > 0.25) buf[i] = DIM[buf[i]];
+        }
+      }
+    };
+
     const draw = (now: number, advance = true) => {
       if (!image || !pixels) return;
       const dt = advance ? Math.min(0.1, (now - last) / 1000) : 0;
@@ -96,6 +142,7 @@ export function PixelScene({
 
       g.clear();
       scene({ g, t, dt, pointer: currentPointer(now) });
+      spotlight(dt);
 
       if (revealPending && inView) {
         revealPending = false;
@@ -114,6 +161,7 @@ export function PixelScene({
 
       const buf = g.buf;
       const cols = g.cols;
+      const LUT = sceneLUT();
       if (progress < 1) {
         for (let i = 0; i < buf.length; i++) {
           const x = i % cols;
@@ -225,6 +273,8 @@ export function PixelScene({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(wrap);
+    // A theme change repaints right away, even for paused or still scenes.
+    const unsubscribeTheme = subscribeTheme(() => draw(performance.now(), false));
     const io = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
@@ -244,6 +294,7 @@ export function PixelScene({
     return () => {
       stop();
       resizeObserver.disconnect();
+      unsubscribeTheme();
       io.disconnect();
       wrap.removeEventListener("pointermove", onMove);
       wrap.removeEventListener("pointerleave", onLeave);

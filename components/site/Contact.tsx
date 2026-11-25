@@ -49,7 +49,7 @@ export function Contact() {
                       href={href}
                       target="_blank"
                       rel="noreferrer"
-                      className="glass px-frame px-sm group inline-flex h-10 items-center gap-2.5 px-4 text-[13.5px] text-ink-2 transition-colors [--frame:var(--color-line-2)] hover:text-ink hover:[--frame:rgb(244_239_231/0.35)]"
+                      className="glass px-frame px-sm group inline-flex h-10 items-center gap-2.5 px-4 text-[13.5px] text-ink-2 transition-colors [--frame:var(--color-line-2)] hover:text-ink hover:[--frame:color-mix(in_srgb,var(--color-ink)_35%,transparent)]"
                     >
                       <Icon className="size-[15px]" />
                       <span className="sr-only">{label}: </span>
